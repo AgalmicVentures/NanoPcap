@@ -1,0 +1,13 @@
+
+before_script:
+
+stages:
+  - test
+
+test_job:
+  stage: test
+  script:
+    - python3 -m unittest discover
+  only:
+    - master
+
