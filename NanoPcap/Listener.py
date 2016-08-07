@@ -1,5 +1,5 @@
 
-class PcapListener:
+class PcapListener(object):
     """
     Represents a generic PCAP event listener.
     """
@@ -21,7 +21,7 @@ class PcapListener:
         """
         raise NotImplementedError('PcapListener.onPcapRecord is pure virtual!')
 
-class PcapDoNothingListener:
+class PcapDoNothingListener(object):
     """
     Implementation of PcapListener which discards events.
     """
@@ -32,7 +32,7 @@ class PcapDoNothingListener:
     def onPcapRecord(self, recordHeader, data):
         pass #Do nothing
 
-class PcapRecordingListener:
+class PcapRecordingListener(object):
     """
     Implementation of PcapListener which records headers for later use.
     """

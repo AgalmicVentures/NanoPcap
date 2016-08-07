@@ -38,7 +38,7 @@ PCAP_RECORD_HEADER_STRUCT_INVERTED = struct.Struct(_structInvert + PCAP_RECORD_H
 
 ########## Types ##########
 
-class PcapHeader:
+class PcapHeader(object):
     """
     Represents a PCAP file header.
     """
@@ -140,7 +140,7 @@ class PcapHeader:
         """
         return self._network
 
-class PcapRecordHeader:
+class PcapRecordHeader(object):
     """
     Represents a PCAP record header.
     """
