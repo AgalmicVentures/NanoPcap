@@ -10,7 +10,14 @@ after_script:
 stages:
   - test
 
-test_job:
+smoke_test_job:
+  stage: test
+  script:
+    - NanoPcap/Tools/PcapDump.py -h
+  only:
+    - master
+
+unit_test_job:
   stage: test
   script:
     - python3 -m unittest discover
