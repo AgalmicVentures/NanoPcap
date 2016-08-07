@@ -148,11 +148,11 @@ class PcapRecordHeader(object):
     def __init__(self, tsSec, tsFrac, includedLength, originalLength, fileHeader=None, strict=False):
         #Basic validation for types
         if tsSec < 0:
-            raise ValueError('ts_sec must not be negative (%s)' % ts_sec)
+            raise ValueError('tsSec must not be negative (%s)' % tsSec)
         if tsFrac < 0:
-            raise ValueError('ts_frac must not be negative (%s)' % ts_frac)
+            raise ValueError('tsFrac must not be negative (%s)' % tsFrac)
         if tsFrac >= (fileHeader.timeResolution() if fileHeader is not None else PCAP_DEFAULT_TIME_RESOLUTION):
-            raise ValueError('ts_frac is too large (%s)' % ts_frac)
+            raise ValueError('tsFrac is too large (%s)' % tsFrac)
         if includedLength < 0:
             raise ValueError('included_length must not be negative (%d)' % includedLength)
         if originalLength < 0:
