@@ -13,7 +13,10 @@ stages:
 smoke_test_job:
   stage: test
   script:
-    - NanoPcap/Tools/PcapDump.py -h
+    - NanoPcap/Tools/PcapDump.py TestData/EmptyNs.pcap
+    - NanoPcap/Tools/PcapDump.py -l TestData/EmptyNs.pcap
+    - NanoPcap/Tools/SummaryDump.py TestData/EmptyNs.pcap
+    - NanoPcap/Tools/SummaryDump.py -u TestData/EmptyNs.pcap
   only:
     - master
 
