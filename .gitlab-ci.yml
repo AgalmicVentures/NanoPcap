@@ -15,8 +15,8 @@ smoke_test_job:
   script:
     - NanoPcap/Tools/PcapDump.py TestData/EmptyNs.pcap
     - NanoPcap/Tools/PcapDump.py -l TestData/EmptyNs.pcap
-    - NanoPcap/Tools/SummaryDump.py TestData/EmptyNs.pcap
-    - NanoPcap/Tools/SummaryDump.py -u TestData/EmptyNs.pcap
+    - NanoPcap/Tools/PcapSummary.py TestData/EmptyNs.pcap
+    - NanoPcap/Tools/PcapSummary.py -u TestData/EmptyNs.pcap
   only:
     - master
 
