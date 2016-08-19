@@ -10,6 +10,9 @@ def formatUnits(value, units, precision=1, useUnits=True):
     :param precision: number of digits of precision to use after the decimal
     :param useUnits: bool indicating if this function should display units
     """
+    if value is None:
+        return None
+
     scaledValue = value
     unit = ''
     if useUnits:
@@ -21,7 +24,7 @@ def formatUnits(value, units, precision=1, useUnits=True):
             unit = name
 
     formatString = '%%.%df%%s' % precision
-    return formatString % (scaledValue, unit)
+    return formatString % (float(scaledValue), unit)
 
 def parseUnits(value, units):
     """
