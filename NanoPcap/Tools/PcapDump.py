@@ -5,10 +5,10 @@ import os
 import sys
 
 import inspect
-_current_file = os.path.abspath(inspect.getfile(inspect.currentframe()))
-_current_dir = os.path.dirname(_current_file)
-_parent_dir = os.path.dirname(os.path.dirname(_current_dir))
-sys.path.insert(0, _parent_dir)
+_currentFile = os.path.abspath(inspect.getfile(inspect.currentframe()))
+_currentDir = os.path.dirname(_currentFile)
+_parentDir = os.path.dirname(os.path.dirname(_currentDir))
+sys.path.insert(0, _parentDir)
 
 from NanoPcap import Listener, Parser
 
@@ -22,7 +22,7 @@ class PcapDumpListener(Listener.PcapListener):
             return
 
         if self._arguments.long:
-            print('  Magic:         %X' % header.magic_number())
+            print('  Magic:         %X' % header.magicNumber())
             print('  Valid:         %s' % ("Valid" if header.isMagicValid() else "Invalid"))
             print('  Resolution:    %s' % ("Micros" if header.timeResolution() == 1000 * 1000 else "Nanos"))
             print('  Major Version: %d' % header.versionMajor())
