@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import json
 import os
 import sys
 
@@ -21,7 +22,21 @@ class PcapDumpListener(Listener.PcapListener):
         if self._arguments.no_header:
             return
 
-        if self._arguments.long:
+        if self._arguments.json:
+            print(json.dumps({
+                'Magic': header.magicNumber(),
+                'Valid': header.isMagicValid() ,
+                'Resolution': header.timeResolution(),
+                'MajorVersion': header.versionMajor(),
+                'MinorVersion': header.versionMinor(),
+                'TzOffset': header.tzOffset(),
+                'Sigfigs': header.sigfigs(),
+                'Snaplen': header.snaplen(),
+                'Network': header.network(),
+            }, indent=2 if self._arguments.long else None, sort_keys=True))
+            if self._arguments.long:
+                print()
+        elif self._arguments.long:
             print('  Magic:         %X' % header.magicNumber())
             print('  Valid:         %s' % ("Valid" if header.isMagicValid() else "Invalid"))
             print('  Resolution:    %s' % ("Micros" if header.timeResolution() == 1000 * 1000 else "Nanos"))
@@ -54,7 +69,16 @@ class PcapDumpListener(Listener.PcapListener):
         else:
             dataOutput = ''
 
-        if self._arguments.long:
+        if self._arguments.json:
+            print(json.dumps({
+                'Seconds': recordHeader.tsSec(),
+                'Fraction': recordHeader.tsFrac(),
+                'IncludedLength': recordHeader.includedLength(),
+                'OriginalLength': recordHeader.originalLength(),
+            }, indent=2 if self._arguments.long else None, sort_keys=True))
+            if self._arguments.long:
+                print()
+        elif self._arguments.long:
             print('Record')
             print('  Seconds:  %d' % recordHeader.tsSec())
             print('  Fraction: %d' % recordHeader.tsFrac())
@@ -78,6 +102,8 @@ def main():
         help='Show a certain number of bytes as hex for each packet record.')
     parser.add_argument('-l', '--long', action='store_true',
         help='Enable long form which generally puts one value per line for easy diffing.')
+    parser.add_argument('-j', '--json', action='store_true',
+        help='Enable JSON output with either one object per line (short mode) or one value per line (long mode)')
     parser.add_argument('-o', '--data-offset', type=int, default=0, action='store',
         help='Offset of the data to show.')
     parser.add_argument('-H', '--no-header', action='store_true',
