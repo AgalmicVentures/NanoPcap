@@ -140,7 +140,7 @@ class PcapSummaryListener(PcapListener):
         self._lastPacketLength = recordHeader.originalLength()
 
 def main():
-    parser = argparse.ArgumentParser(description='Machine configuration generator')
+    parser = argparse.ArgumentParser(description='PCAP Summary Diagnostic')
     parser.add_argument('pcap', help='PCAP file to summarize.')
     parser.add_argument('-H', '--no-header', action='store_true',
         help='Do not show header.')

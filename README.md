@@ -13,7 +13,7 @@ value).
 	usage: PcapDump.py [-h] [-d DATA_BYTES] [-l] [-o DATA_OFFSET] [-H] [-R] [-s]
 	                   pcap
 
-	PCAP dump diagnostic
+	PCAP Dump Diagnostic
 
 	positional arguments:
 	  pcap                  PCAP file to dump.
@@ -37,7 +37,7 @@ Summarizes a PCAP.
 	> NanoPcap/Tools/PcapSummary.py -h
 	usage: PcapSummary.py [-h] [-H] [-s] [-u] pcap
 
-	Machine configuration generator
+	PCAP Summary Diagnostic
 
 	positional arguments:
 	  pcap             PCAP file to summarize.

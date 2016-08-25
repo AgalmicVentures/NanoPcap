@@ -96,7 +96,7 @@ class PcapDumpListener(Listener.PcapListener):
             ))
 
 def main():
-    parser = argparse.ArgumentParser(description='PCAP dump diagnostic')
+    parser = argparse.ArgumentParser(description='PCAP Dump Diagnostic')
     parser.add_argument('pcap', help='PCAP file to dump.')
     parser.add_argument('-d', '--data-bytes', type=int, default=0, action='store',
         help='Show a certain number of bytes as hex for each packet record.')
