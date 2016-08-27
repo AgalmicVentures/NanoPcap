@@ -41,6 +41,14 @@ PCAP_RECORD_HEADER_STRUCT_INVERTED = struct.Struct(_structInvert + PCAP_RECORD_H
 class PcapHeader(object):
     """
     Represents a PCAP file header.
+
+    :param magicNumber: int The magic number.
+    :param versionMajor: int The major version number.
+    :param versionMinor: int The minor version number.
+    :param tzOffset: int The time zone offset from UTC.
+    :param sigfigs: int The precision of the time tamps.
+    :param snaplen: int The snapshot length.
+    :param network: int The network type ID.
     """
 
     def __init__(self, magicNumber, versionMajor, versionMinor, tzOffset, sigfigs, snaplen, network):
@@ -176,6 +184,13 @@ class PcapHeader(object):
 class PcapRecordHeader(object):
     """
     Represents a PCAP record header.
+
+    :param tsSec: int The timestamp seconds.
+    :param tsFrac: int The timestamp fraction.
+    :param includedLength: int The included length.
+    :param originalLength: int The original length.
+    :param fileHeader: PcapHeader The file's header (optional).
+    :param strict: bool Flag indicating whether to validate strictly (default False).
     """
 
     def __init__(self, tsSec, tsFrac, includedLength, originalLength, fileHeader=None, strict=False):

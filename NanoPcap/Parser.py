@@ -6,6 +6,8 @@ def parseFile(filename, listener, strict=False):
     Parse a PCAP with the given filename.
 
     :param filename: str The file to parse
+    :param listener: PcapListener
+    :param strict: bool Indicating strict validation
     """
     with open(filename, 'rb') as pcapFile:
         parse(pcapFile, listener, strict=strict)
@@ -15,6 +17,8 @@ def parse(pcapFile, listener, strict=False):
     Parse a PCAP from the given file-like object (file, socket, etc.)
 
     :param pcapFile: file-like object to parse from
+    :param listener: PcapListener
+    :param strict: bool Indicating strict validation
     """
     #Read the header first
     headerBytes = pcapFile.read(Format.PCAP_HEADER_STRUCT.size)
