@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import random
 import sys
 
 import inspect
@@ -38,7 +39,9 @@ class PcapFilterListener(Listener.PcapListener):
         if self._arguments.no_records:
             return
 
-        #TODO: filter
+        #Filter
+        if random.random() < self._arguments.drop_fraction:
+            return
 
         #Update with new snaplen
         snaplen = min(self._arguments.snaplen, recordHeader.includedLength())
@@ -56,9 +59,11 @@ def main():
     parser.add_argument('input', help='PCAP file to use as input.')
     parser.add_argument('output', help='Output file')
 
+    #Validation
     parser.add_argument('-s', '--strict', action='store_true',
         help='Enables strict validation rules.')
 
+    #"Where to cut"
     parser.add_argument('-l', '--snaplen', type=int, default=65535, action='store',
         help='Add a certain number of bytes for each packet record.')
     parser.add_argument('-o', '--data-offset', type=int, default=0, action='store',
@@ -68,7 +73,9 @@ def main():
     parser.add_argument('-R', '--no-records', action='store_true',
         help='Do not output records.')
 
-    #TODO: filter arguments
+    #Filtering
+    parser.add_argument('-D', '--drop-fraction', type=float, default=0.0, action='store',
+        help='Fraction of the time to drop packagets (from 0 to 1 inclusive).')
 
     arguments = parser.parse_args(sys.argv[1:])
 

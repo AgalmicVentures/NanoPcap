@@ -37,6 +37,7 @@ length truncation.
 
 	> NanoPcap/Tools/PcapFilter.py -h
 	usage: PcapFilter.py [-h] [-s] [-l SNAPLEN] [-o DATA_OFFSET] [-H] [-R]
+	                     [-D DROP_FRACTION]
 	                     input output
 
 	PCAP Filter Tool
@@ -54,6 +55,9 @@ length truncation.
 	                        Offset of the data to include.
 	  -H, --no-header       Do not output the header.
 	  -R, --no-records      Do not output records.
+	  -D DROP_FRACTION, --drop-fraction DROP_FRACTION
+	                        Fraction of the time to drop packagets (from 0 to 1
+	                        inclusive).
 
 ### `PcapSummary`
 Summarizes a PCAP.
