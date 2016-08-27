@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import datetime
 import os
 import sys
 
@@ -27,6 +28,8 @@ class PcapSummaryListener(PcapListener):
         self._lastNs = None
         self._interpacketNs = Statistics.SummaryStatistics()
         self._interpacketNsOrder = Statistics.OrderStatistics()
+        self._epochNs = Statistics.SummaryStatistics()
+        self._epochNsOrder = Statistics.OrderStatistics()
         self._packetRatesOrder = Statistics.OrderStatistics()
         self._dataRatesOrder = Statistics.OrderStatistics()
 
@@ -42,6 +45,13 @@ class PcapSummaryListener(PcapListener):
     def printReport(self):
         formatString = '%-24s %10s %16s %14s %14s %14s %14s %14s %14s %14s %14s %14s %14s'
         if not self._arguments.no_header:
+            print('Epoch times: %d - %d (%dns) (%s - %s)' % (
+                self._epochNsOrder.min(), self._epochNsOrder.max(),
+                self._epochNsOrder.max() - self._epochNsOrder.min(),
+                datetime.datetime.fromtimestamp(self._epochNsOrder.min() / (1000 * 1000 * 1000)),
+                datetime.datetime.fromtimestamp(self._epochNsOrder.max() / (1000 * 1000 * 1000)),
+            ))
+            print()
             print(formatString % ('Name', 'Count', 'Total', 'Average', 'Std Dev', 'Min', '25th %', '50th %', '75th %', '95th %', '99th %', '99.9th %', 'Max'))
 
         print(formatString % ('Included Length',
@@ -125,6 +135,8 @@ class PcapSummaryListener(PcapListener):
         self._originalLengthsOrder.sample(recordHeader.originalLength())
 
         ns = recordHeader.epochNanos()
+        self._epochNs.sample(ns)
+        self._epochNsOrder.sample(ns)
         if self._lastNs is not None:
             dtNs = ns - self._lastNs
             self._interpacketNs.sample(dtNs)
