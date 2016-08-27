@@ -132,6 +132,15 @@ class PcapHeader(object):
         """
         return self._snaplen
 
+    #TODO: Not thrilled about making these not immutable -- figure out how to make that efficient
+    def setSnaplen(self, snaplen):
+        """
+        Sets the snapshot length.
+
+        :param snaplen: int
+        """
+        self._snaplen = snaplen
+
     def network(self):
         """
         Returns the data link type.
@@ -264,6 +273,15 @@ class PcapRecordHeader(object):
         :return: int
         """
         return self._includedLength
+
+    #TODO: Not thrilled about making these not immutable -- figure out how to make that efficient
+    def setIncludedLength(self, includedLength):
+        """
+        Sets the snapshot length.
+
+        :param snaplen: int
+        """
+        self._includedLength = includedLength
 
     def originalLength(self):
         """

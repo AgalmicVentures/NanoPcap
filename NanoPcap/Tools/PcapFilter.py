@@ -24,8 +24,13 @@ class PcapFilterListener(Listener.PcapListener):
         if self._arguments.no_header:
             return
 
-        #TODO: warn on a smaller snap len before
-        #TODO: update with new snaplen
+        #Warn on a larger snap len than before
+        if self._arguments.snaplen > header.snaplen():
+            print('WARNING: New snaplen is greater than original: %d > %d' % (args.snaplen, header.snaplen()))
+
+        #Update with new snaplen
+        snaplen = min(self._arguments.snaplen, header.snaplen())
+        header.setSnaplen(snaplen)
 
         header.writeToFile(self._outputFile)
 
@@ -35,7 +40,9 @@ class PcapFilterListener(Listener.PcapListener):
 
         #TODO: filter
 
-        #TODO: update snaplen
+        #Update with new snaplen
+        snaplen = min(self._arguments.snaplen, recordHeader.includedLength())
+        recordHeader.setIncludedLength(snaplen)
 
         #Write the header
         recordHeader.writeToFile(self._outputFile)
