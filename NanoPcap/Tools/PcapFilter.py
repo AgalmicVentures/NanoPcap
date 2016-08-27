@@ -99,21 +99,21 @@ def main():
     arguments = parser.parse_args(sys.argv[1:])
 
     #Parse the start time
-    try:
-        arguments.start = int(arguments.start)
-    except ValueError:
-        arguments.start = datetimeToEpochNanos(datetime.datetime.strptime(arguments.start, '%Y-%m-%d %H:%M:%S.%f'))
+    if arguments.start is not None:
+        try:
+            arguments.start = int(arguments.start)
+        except ValueError:
+            arguments.start = datetimeToEpochNanos(datetime.datetime.strptime(arguments.start, '%Y-%m-%d %H:%M:%S.%f'))
 
     #Parse the end time
-    try:
-        relativeEnd = arguments.end[0] == '+'
-        arguments.end = int(arguments.end)
-    except ValueError:
-        arguments.end = datetimeToEpochNanos(datetime.datetime.strptime(arguments.end, '%Y-%m-%d %H:%M:%S.%f'))
-
-    #Setup relative times
-    if relativeEnd:
-        arguments.end += arguments.start
+    if arguments.end is not None:
+        try:
+            relativeEnd = arguments.end[0] == '+' and arguments.start is not None
+            arguments.end = int(arguments.end)
+            if relativeEnd:
+                arguments.end += arguments.start
+        except ValueError:
+            arguments.end = datetimeToEpochNanos(datetime.datetime.strptime(arguments.end, '%Y-%m-%d %H:%M:%S.%f'))
 
     listener = PcapFilterListener(arguments)
     Parser.parseFile(arguments.input, listener, strict=arguments.strict)
