@@ -28,6 +28,9 @@ class FormatTest(unittest.TestCase):
         self.assertEqual(header.network(), initial[6])
         self.assertFalse(header.isMagicValid())
 
+        byteValue = header.asBytes()
+        self.assertEqual(byteValue, packed)
+
     def test_headerMagic(self):
         correctMagicInitial = list(self._initialHeader)
         correctMagicInitial[0] = Format.PCAP_MAGIC_NUMBER
@@ -57,6 +60,9 @@ class FormatTest(unittest.TestCase):
         self.assertEqual(recordHeader.tsFrac(), initial[1])
         self.assertEqual(recordHeader.epochNanos(), initial[0] * 1000 * 1000 * 1000 + initial[1])
         self.assertEqual(recordHeader.epochSecondsFloat(), 1463179445.010)
+
+        byteValue = recordHeader.asBytes()
+        self.assertEqual(byteValue, packed)
 
         d = recordHeader.timestampDatetime()
         self.assertEqual(d.year, 2016)

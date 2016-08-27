@@ -140,6 +140,30 @@ class PcapHeader(object):
         """
         return self._network
 
+    def asBytes(self):
+        """
+        Returns the data as bytes.
+
+        :return: bytes or str depending on Python version
+        """
+        return PCAP_HEADER_STRUCT.pack(
+            self.magicNumber(),
+            self.versionMajor(),
+            self.versionMinor(),
+            self.tzOffset(),
+            self.sigfigs(),
+            self.snaplen(),
+            self.network(),
+        )
+
+    def writeToFile(self, output):
+        """
+        Writes this as bytes to a file.
+
+        :param output: file like object
+        """
+        output.write(self.asBytes())
+
 class PcapRecordHeader(object):
     """
     Represents a PCAP record header.
@@ -248,3 +272,24 @@ class PcapRecordHeader(object):
         :return: int
         """
         return self._originalLength
+
+    def asBytes(self):
+        """
+        Returns the data as bytes.
+
+        :return: bytes or str depending on Python version
+        """
+        return PCAP_RECORD_HEADER_STRUCT.pack(
+            self.tsSec(),
+            self.tsFrac(),
+            self.includedLength(),
+            self.originalLength(),
+        )
+
+    def writeToFile(self, output):
+        """
+        Writes this as bytes to a file.
+
+        :param output: file like object
+        """
+        output.write(self.asBytes())
