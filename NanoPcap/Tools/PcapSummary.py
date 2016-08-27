@@ -49,8 +49,8 @@ class PcapSummaryListener(PcapListener):
                 print('Epoch times: %d - %d (%dns) (%s - %s)' % (
                     self._epochNsOrder.min(), self._epochNsOrder.max(),
                     self._epochNsOrder.max() - self._epochNsOrder.min(),
-                    datetime.datetime.fromtimestamp(self._epochNsOrder.min() / (1000 * 1000 * 1000)),
-                    datetime.datetime.fromtimestamp(self._epochNsOrder.max() / (1000 * 1000 * 1000)),
+                    datetime.datetime.utcfromtimestamp(self._epochNsOrder.min() / (1000 * 1000 * 1000)),
+                    datetime.datetime.utcfromtimestamp(self._epochNsOrder.max() / (1000 * 1000 * 1000)),
                 ))
                 print()
             print(formatString % ('Name', 'Count', 'Total', 'Average', 'Std Dev', 'Min', '25th %', '50th %', '75th %', '95th %', '99th %', '99.9th %', 'Max'))

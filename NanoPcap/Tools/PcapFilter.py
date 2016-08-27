@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import datetime
 import json
 import os
 import random
@@ -40,7 +41,16 @@ class PcapFilterListener(Listener.PcapListener):
             return
 
         #Filter
-        if random.random() < self._arguments.drop_fraction:
+
+        #Check the time
+        epochTime = recordHeader.epochNanos()
+        if self._arguments.start is not None and epochTime < self._arguments.start:
+            return
+        if self._arguments.end is not None and epochTime > self._arguments.end:
+            return
+
+        #Drop
+        if self._arguments.drop_fraction > 0 and random.random() < self._arguments.drop_fraction:
             return
 
         #Update with new snaplen
@@ -54,16 +64,20 @@ class PcapFilterListener(Listener.PcapListener):
         truncatedData = data[self._arguments.data_offset:self._arguments.data_offset+self._arguments.snaplen]
         self._outputFile.write(truncatedData)
 
+def datetimeToEpochNanos(dt):
+    seconds = (dt - datetime.datetime(1970, 1, 1)).total_seconds()
+    return seconds * 1000 * 1000 * 1000
+
 def main():
     parser = argparse.ArgumentParser(description='PCAP Filter Tool')
     parser.add_argument('input', help='PCAP file to use as input.')
     parser.add_argument('output', help='Output file')
 
     #Validation
-    parser.add_argument('-s', '--strict', action='store_true',
+    parser.add_argument('--strict', action='store_true',
         help='Enables strict validation rules.')
 
-    #"Where to cut"
+    #"Where to cut" in bytes
     parser.add_argument('-l', '--snaplen', type=int, default=65535, action='store',
         help='Add a certain number of bytes for each packet record.')
     parser.add_argument('-o', '--data-offset', type=int, default=0, action='store',
@@ -74,10 +88,32 @@ def main():
         help='Do not output records.')
 
     #Filtering
+    parser.add_argument('-s', '--start', default=None, action='store',
+        help='Start time as either epoch nanoseconds or a datetime (with only microsecond resolution).')
+    parser.add_argument('-e', '--end', default=None, action='store',
+        help='End time as either epoch nanoseconds or a relative offset in nanoseconds to the start (e.g. +100 would yield a 100ns PCAP).')
+
     parser.add_argument('-D', '--drop-fraction', type=float, default=0.0, action='store',
         help='Fraction of the time to drop packagets (from 0 to 1 inclusive).')
 
     arguments = parser.parse_args(sys.argv[1:])
+
+    #Parse the start time
+    try:
+        arguments.start = int(arguments.start)
+    except ValueError:
+        arguments.start = datetimeToEpochNanos(datetime.datetime.strptime(arguments.start, '%Y-%m-%d %H:%M:%S.%f'))
+
+    #Parse the end time
+    try:
+        relativeEnd = arguments.end[0] == '+'
+        arguments.end = int(arguments.end)
+    except ValueError:
+        arguments.end = datetimeToEpochNanos(datetime.datetime.strptime(arguments.end, '%Y-%m-%d %H:%M:%S.%f'))
+
+    #Setup relative times
+    if relativeEnd:
+        arguments.end += arguments.start
 
     listener = PcapFilterListener(arguments)
     Parser.parseFile(arguments.input, listener, strict=arguments.strict)
