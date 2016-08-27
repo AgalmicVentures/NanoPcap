@@ -31,6 +31,30 @@ value).
 	  -R, --no-records      Do not show records.
 	  -s, --strict          Enables strict validation rules.
 
+### `PcapFilter`
+Filters a PCAP based on set criteria and optionally does other edits like snapshot
+length truncation.
+
+	> NanoPcap/Tools/PcapFilter.py -h
+	usage: PcapFilter.py [-h] [-s] [-l SNAPLEN] [-o DATA_OFFSET] [-H] [-R]
+	                     input output
+
+	PCAP Filter Tool
+
+	positional arguments:
+	  input                 PCAP file to use as input.
+	  output                Output file
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -s, --strict          Enables strict validation rules.
+	  -l SNAPLEN, --snaplen SNAPLEN
+	                        Add a certain number of bytes for each packet record.
+	  -o DATA_OFFSET, --data-offset DATA_OFFSET
+	                        Offset of the data to include.
+	  -H, --no-header       Do not output the header.
+	  -R, --no-records      Do not output records.
+
 ### `PcapSummary`
 Summarizes a PCAP.
 

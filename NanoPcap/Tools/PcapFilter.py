@@ -1,0 +1,74 @@
+#!/usr/bin/env python3
+
+import argparse
+import json
+import os
+import sys
+
+import inspect
+_currentFile = os.path.abspath(inspect.getfile(inspect.currentframe()))
+_currentDir = os.path.dirname(_currentFile)
+_parentDir = os.path.dirname(os.path.dirname(_currentDir))
+sys.path.insert(0, _parentDir)
+
+from NanoPcap import Listener, Parser
+
+class PcapFilterListener(Listener.PcapListener):
+
+    def __init__(self, arguments):
+        self._arguments = arguments
+
+        self._outputFile = open(arguments.output, 'wb')
+
+    def onPcapHeader(self, header):
+        if self._arguments.no_header:
+            return
+
+        #TODO: warn on a smaller snap len before
+        #TODO: update with new snaplen
+
+        header.writeToFile(self._outputFile)
+
+    def onPcapRecord(self, recordHeader, data):
+        if self._arguments.no_records:
+            return
+
+        #TODO: filter
+
+        #TODO: update snaplen
+
+        #Write the header
+        recordHeader.writeToFile(self._outputFile)
+
+        #Write the data
+        truncatedData = data[self._arguments.data_offset:self._arguments.data_offset+self._arguments.snaplen]
+        self._outputFile.write(truncatedData)
+
+def main():
+    parser = argparse.ArgumentParser(description='PCAP Filter Tool')
+    parser.add_argument('input', help='PCAP file to use as input.')
+    parser.add_argument('output', help='Output file')
+
+    parser.add_argument('-s', '--strict', action='store_true',
+        help='Enables strict validation rules.')
+
+    parser.add_argument('-l', '--snaplen', type=int, default=65535, action='store',
+        help='Add a certain number of bytes for each packet record.')
+    parser.add_argument('-o', '--data-offset', type=int, default=0, action='store',
+        help='Offset of the data to include.')
+    parser.add_argument('-H', '--no-header', action='store_true',
+        help='Do not output the header.')
+    parser.add_argument('-R', '--no-records', action='store_true',
+        help='Do not output records.')
+
+    #TODO: filter arguments
+
+    arguments = parser.parse_args(sys.argv[1:])
+
+    listener = PcapFilterListener(arguments)
+    Parser.parseFile(arguments.input, listener, strict=arguments.strict)
+
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main())
