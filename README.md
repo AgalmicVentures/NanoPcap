@@ -36,8 +36,8 @@ Filters a PCAP based on set criteria and optionally does other edits like snapsh
 length truncation.
 
 	> NanoPcap/Tools/PcapFilter.py -h
-	usage: PcapFilter.py [-h] [-s] [-l SNAPLEN] [-o DATA_OFFSET] [-H] [-R]
-	                     [-D DROP_FRACTION]
+	usage: PcapFilter.py [-h] [--strict] [-l SNAPLEN] [-o DATA_OFFSET] [-H] [-R]
+	                     [-s START] [-e END] [-D DROP_FRACTION]
 	                     input output
 
 	PCAP Filter Tool
@@ -48,13 +48,19 @@ length truncation.
 
 	optional arguments:
 	  -h, --help            show this help message and exit
-	  -s, --strict          Enables strict validation rules.
+	  --strict              Enables strict validation rules.
 	  -l SNAPLEN, --snaplen SNAPLEN
 	                        Add a certain number of bytes for each packet record.
 	  -o DATA_OFFSET, --data-offset DATA_OFFSET
 	                        Offset of the data to include.
 	  -H, --no-header       Do not output the header.
 	  -R, --no-records      Do not output records.
+	  -s START, --start START
+	                        Start time as either epoch nanoseconds or a datetime
+	                        (with only microsecond resolution).
+	  -e END, --end END     End time as either epoch nanoseconds or a relative
+	                        offset in nanoseconds to the start (e.g. +100 would
+	                        yield a 100ns PCAP).
 	  -D DROP_FRACTION, --drop-fraction DROP_FRACTION
 	                        Fraction of the time to drop packagets (from 0 to 1
 	                        inclusive).
