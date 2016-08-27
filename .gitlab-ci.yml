@@ -10,6 +10,14 @@ after_script:
 stages:
   - test
 
+help_test_job:
+  stage: test
+  script:
+    - NanoPcap/Tools/PcapDump.py -h
+    - NanoPcap/Tools/PcapFilter.py -h
+    - NanoPcap/Tools/PcapSummary.py -h
+  only:
+    - master
 smoke_test_job:
   stage: test
   script:
