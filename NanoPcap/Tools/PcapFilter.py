@@ -2,7 +2,6 @@
 
 import argparse
 import datetime
-import json
 import os
 import random
 import sys
@@ -28,7 +27,7 @@ class PcapFilterListener(Listener.PcapListener):
 
         #Warn on a larger snap len than before
         if self._arguments.snaplen > header.snaplen():
-            print('WARNING: New snaplen is greater than original: %d > %d' % (args.snaplen, header.snaplen()))
+            print('WARNING: New snaplen is greater than original: %d > %d' % (self._arguments.snaplen, header.snaplen()))
 
         #Update with new snaplen
         snaplen = min(self._arguments.snaplen, header.snaplen())

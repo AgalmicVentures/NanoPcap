@@ -1,7 +1,7 @@
 
 import math
 
-class OrderStatistics:
+class OrderStatistics(object):
     """
     Represents naive order statistics on a set of data (useful to avoid
     pulling in dependencies for simple projects).
@@ -95,7 +95,7 @@ class OrderStatistics:
             self._update()
         return self._samples[-1] if len(self._samples) > 0 else None
 
-class SummaryStatistics:
+class SummaryStatistics(object):
     """
     Represents simple summary statistics on a set of data (useful to avoid
     pulling in dependencies for simple projects).
