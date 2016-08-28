@@ -61,6 +61,8 @@ class PcapFilterListener(Listener.PcapListener):
 		end = min(start + self._arguments.snaplen, len(data) - start - self._arguments.data_end_offset)
 		truncatedData = data[start:end]
 		recordHeader.setIncludedLength(len(truncatedData))
+		if self._arguments.link_type is not None:
+			recordHeader.setOriginalLength(len(truncatedData))
 
 		#Write the header and data
 		recordHeader.writeToFile(self._outputFile)

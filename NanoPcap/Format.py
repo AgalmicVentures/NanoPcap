@@ -315,6 +315,15 @@ class PcapRecordHeader(object):
 		"""
 		return self._originalLength
 
+	#TODO: Not thrilled about making these not immutable -- figure out how to make that efficient
+	def setOriginalLength(self, originalLength):
+		"""
+		Sets the snapshot length.
+
+		:param snaplen: int
+		"""
+		self._originalLength = originalLength
+
 	def asBytes(self):
 		"""
 		Returns the data as bytes.
