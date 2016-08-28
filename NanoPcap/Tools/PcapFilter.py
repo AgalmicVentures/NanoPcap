@@ -29,6 +29,11 @@ class PcapFilterListener(Listener.PcapListener):
 		if self._arguments.snaplen > header.snaplen():
 			print('WARNING: New snaplen is greater than original: %d > %d' % (self._arguments.snaplen, header.snaplen()))
 
+		#Check if the link type is correct
+		if self._arguments.required_link_type is not None and self._arguments.required_link_type != header.network():
+			print('ERROR: Link type is %d instead of %d' % (header.network(), self._arguments.required_link_type))
+			sys.exit(1)
+
 		#Update with new snaplen
 		snaplen = min(self._arguments.snaplen, header.snaplen())
 		header.setSnaplen(snaplen)
@@ -96,6 +101,8 @@ def main():
 		help='Append to the file (implies no header).')
 
 	#Header edits
+	parser.add_argument('--required-link-type', type=int, default=None, action='store',
+		help='The required link type of the file being edited (e.g. 1 for Ethernet, 228 for IPv4, 229 for IPv6).')
 	parser.add_argument('--link-type', type=int, default=None, action='store',
 		help='A value to set the link type in the header to (e.g. 1 for Ethernet, 228 for IPv4, 229 for IPv6).')
 
