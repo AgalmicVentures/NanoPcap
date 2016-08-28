@@ -1,4 +1,6 @@
 
+import math
+
 def formatUnits(value, units, precision=1, useUnits=True):
     """
     Formats the value with appropriate units to the given number of digits of precision.
@@ -12,6 +14,10 @@ def formatUnits(value, units, precision=1, useUnits=True):
     """
     if value is None:
         return None
+
+    #No need to attach units to infinities
+    elif math.isinf(value):
+        return str(value)
 
     scaledValue = value
     unit = ''
