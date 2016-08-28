@@ -157,6 +157,15 @@ class PcapHeader(object):
 		"""
 		return self._network
 
+	#TODO: Not thrilled about making these not immutable -- figure out how to make that efficient
+	def setNetwork(self, network):
+		"""
+		Sets the network (link type).
+
+		:param network: int
+		"""
+		self._network = network
+
 	def asBytes(self):
 		"""
 		Returns the data as bytes.

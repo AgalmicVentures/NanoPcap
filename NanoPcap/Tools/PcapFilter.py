@@ -33,6 +33,10 @@ class PcapFilterListener(Listener.PcapListener):
 		snaplen = min(self._arguments.snaplen, header.snaplen())
 		header.setSnaplen(snaplen)
 
+		#Update with the new link link
+		if self._arguments.link_type is not None:
+			header.setNetwork(self._arguments.link_type)
+
 		header.writeToFile(self._outputFile)
 
 	def onPcapRecord(self, recordHeader, data):
@@ -53,14 +57,13 @@ class PcapFilterListener(Listener.PcapListener):
 			return
 
 		#Update with new snaplen
-		snaplen = min(self._arguments.snaplen, recordHeader.includedLength())
-		recordHeader.setIncludedLength(snaplen)
+		start = self._arguments.data_offset
+		end = min(start + self._arguments.snaplen, len(data) - start - self._arguments.data_end_offset)
+		truncatedData = data[start:end]
+		recordHeader.setIncludedLength(len(truncatedData))
 
-		#Write the header
+		#Write the header and data
 		recordHeader.writeToFile(self._outputFile)
-
-		#Write the data
-		truncatedData = data[self._arguments.data_offset:self._arguments.data_offset+self._arguments.snaplen]
 		self._outputFile.write(truncatedData)
 
 def datetimeToEpochNanos(dt):
@@ -81,12 +84,18 @@ def main():
 		help='Add a certain number of bytes for each packet record.')
 	parser.add_argument('-o', '--data-offset', type=int, default=0, action='store',
 		help='Offset of the data to include.')
+	parser.add_argument('-x', '--data-end-offset', type=int, default=0, action='store',
+		help='Offset from the end of the data to include.')
 	parser.add_argument('-H', '--no-header', action='store_true',
 		help='Do not output the header.')
 	parser.add_argument('-R', '--no-records', action='store_true',
 		help='Do not output records.')
 	parser.add_argument('-a', '--append', action='store_true',
 		help='Append to the file (implies no header).')
+
+	#Header edits
+	parser.add_argument('--link-type', type=int, default=None, action='store',
+		help='A value to set the link type in the header to (e.g. 1 for Ethernet, 228 for IPv4, 229 for IPv6).')
 
 	#Filtering
 	parser.add_argument('-s', '--start', default=None, action='store',

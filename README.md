@@ -36,8 +36,10 @@ Filters a PCAP based on set criteria and optionally does other edits like snapsh
 length truncation.
 
 	> NanoPcap/Tools/PcapFilter.py -h
-	usage: PcapFilter.py [-h] [--strict] [-l SNAPLEN] [-o DATA_OFFSET] [-H] [-R]
-	                     [-s START] [-e END] [-D DROP_FRACTION]
+	usage: PcapFilter.py [-h] [--strict] [-l SNAPLEN] [-o DATA_OFFSET]
+	                     [-x DATA_END_OFFSET] [-H] [-R] [-a]
+	                     [--link-type LINK_TYPE] [-s START] [-e END]
+	                     [-D DROP_FRACTION]
 	                     input output
 
 	PCAP Filter Tool
@@ -53,8 +55,14 @@ length truncation.
 	                        Add a certain number of bytes for each packet record.
 	  -o DATA_OFFSET, --data-offset DATA_OFFSET
 	                        Offset of the data to include.
+	  -x DATA_END_OFFSET, --data-end-offset DATA_END_OFFSET
+	                        Offset from the end of the data to include.
 	  -H, --no-header       Do not output the header.
 	  -R, --no-records      Do not output records.
+	  -a, --append          Append to the file (implies no header).
+	  --link-type LINK_TYPE
+	                        A value to set the link type in the header to (e.g. 1
+	                        for Ethernet, 228 for IPv4, 229 for IPv6).
 	  -s START, --start START
 	                        Start time as either epoch nanoseconds or a datetime
 	                        (with only microsecond resolution).
@@ -64,6 +72,11 @@ length truncation.
 	  -D DROP_FRACTION, --drop-fraction DROP_FRACTION
 	                        Fraction of the time to drop packagets (from 0 to 1
 	                        inclusive).
+
+For example, here is how Ethernet headers (L2) were removed to generate the files in TestData:
+
+	> NanoPcap/Tools/PcapFilter.py SSH.pcap TestData/SSH_L3.pcap -o 14 -x 4 --link-type 228
+	> NanoPcap/Tools/PcapFilter.py SSH2.pcap TestData/SSH2_L3.pcap -o 14 -x 4 --link-type 228
 
 ### `PcapSummary`
 Summarizes a PCAP.
