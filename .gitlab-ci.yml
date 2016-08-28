@@ -22,11 +22,36 @@ help_test_job:
 smoke_test_job:
   stage: test
   script:
+    #Dump
+    #Short
     - NanoPcap/Tools/PcapDump.py TestData/EmptyNs.pcap
+    - NanoPcap/Tools/PcapDump.py TestData/SSH_L3.pcap
+    - NanoPcap/Tools/PcapDump.py TestData/SSH2_L3.pcap
+    #Long
     - NanoPcap/Tools/PcapDump.py -l TestData/EmptyNs.pcap
+    #JSON
+    - NanoPcap/Tools/PcapDump.py -j TestData/EmptyNs.pcap
+    - NanoPcap/Tools/PcapDump.py -j TestData/SSH_L3.pcap
+    - NanoPcap/Tools/PcapDump.py -j TestData/SSH2_L3.pcap
+
+    #Filter
+    #Pass through
     - NanoPcap/Tools/PcapFilter.py TestData/EmptyNs.pcap /dev/null
+    - NanoPcap/Tools/PcapFilter.py TestData/SSH_L3.pcap /dev/null
+    - NanoPcap/Tools/PcapFilter.py TestData/SSH2_L3.pcap /dev/null
+    #Randomized drops
+    - NanoPcap/Tools/PcapFilter.py -D 0.75 TestData/SSH_L3.pcap /dev/null
+    - NanoPcap/Tools/PcapFilter.py -D 0.25 TestData/SSH_L23.pcap /dev/null
+
+    #Summary
+    #Without units
     - NanoPcap/Tools/PcapSummary.py TestData/EmptyNs.pcap
+    - NanoPcap/Tools/PcapSummary.py TestData/SSH_L3.pcap
+    - NanoPcap/Tools/PcapSummary.py TestData/SSH2_L3.pcap
+    #With units
     - NanoPcap/Tools/PcapSummary.py -u TestData/EmptyNs.pcap
+    - NanoPcap/Tools/PcapSummary.py -u TestData/SSH_L3.pcap
+    - NanoPcap/Tools/PcapSummary.py -u TestData/SSH2_L3.pcap
   only:
     - master
 
