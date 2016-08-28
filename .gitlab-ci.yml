@@ -41,7 +41,7 @@ smoke_test_job:
     - NanoPcap/Tools/PcapFilter.py TestData/SSH2_L3.pcap /dev/null
     #Randomized drops
     - NanoPcap/Tools/PcapFilter.py -D 0.75 TestData/SSH_L3.pcap /dev/null
-    - NanoPcap/Tools/PcapFilter.py -D 0.25 TestData/SSH_L23.pcap /dev/null
+    - NanoPcap/Tools/PcapFilter.py -D 0.25 TestData/SSH2_L3.pcap /dev/null
 
     #Summary
     #Without units
