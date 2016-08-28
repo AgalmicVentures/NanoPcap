@@ -19,10 +19,10 @@ class PcapFilterListener(Listener.PcapListener):
     def __init__(self, arguments):
         self._arguments = arguments
 
-        self._outputFile = open(arguments.output, 'wb')
+        self._outputFile = open(arguments.output, 'ab' if arguments.append else 'wb')
 
     def onPcapHeader(self, header):
-        if self._arguments.no_header:
+        if self._arguments.no_header or self._arguments.append:
             return
 
         #Warn on a larger snap len than before
@@ -85,6 +85,8 @@ def main():
         help='Do not output the header.')
     parser.add_argument('-R', '--no-records', action='store_true',
         help='Do not output records.')
+    parser.add_argument('-a', '--append', action='store_true',
+        help='Append to the file (implies no header).')
 
     #Filtering
     parser.add_argument('-s', '--start', default=None, action='store',
