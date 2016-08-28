@@ -41,7 +41,7 @@ class PcapFilterListener(Listener.PcapListener):
 			header.setNetwork(self._arguments.link_type)
 
 		#Write to the output file
-		self._outputFile = open(arguments.output, 'ab' if arguments.append else 'wb')
+		self._outputFile = open(self._arguments.output, 'ab' if self._arguments.append else 'wb')
 		header.writeToFile(self._outputFile)
 
 	def onPcapRecord(self, recordHeader, data):
