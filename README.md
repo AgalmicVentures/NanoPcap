@@ -93,6 +93,7 @@ Summarizes a PCAP. For example:
 
 Or with units:
 
+	> NanoPcap/Tools/PcapSummary.py -u TestData/SSH_L3.pcap
 	Epoch times: 1472402228930675000 - 1472402228930905000 (230000ns) (2016-08-28 16:37:08.930675 - 2016-08-28 16:37:08.930905)
 
 	Name                          Count            Total        Average        Std Dev            Min         25th %         50th %         75th %         95th %         99th %       99.9th %            Max
