@@ -19,8 +19,6 @@ class PcapFilterListener(Listener.PcapListener):
 	def __init__(self, arguments):
 		self._arguments = arguments
 
-		self._outputFile = open(arguments.output, 'ab' if arguments.append else 'wb')
-
 	def onPcapHeader(self, header):
 		if self._arguments.no_header or self._arguments.append:
 			return
@@ -42,6 +40,8 @@ class PcapFilterListener(Listener.PcapListener):
 		if self._arguments.link_type is not None:
 			header.setNetwork(self._arguments.link_type)
 
+		#Write to the output file
+		self._outputFile = open(arguments.output, 'ab' if arguments.append else 'wb')
 		header.writeToFile(self._outputFile)
 
 	def onPcapRecord(self, recordHeader, data):
