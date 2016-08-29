@@ -103,7 +103,7 @@ def main():
 	parser.add_argument('-l', '--long', action='store_true',
 		help='Enable long form which generally puts one value per line for easy diffing.')
 	parser.add_argument('-j', '--json', action='store_true',
-		help='Enable JSON output with either one object per line (short mode) or one value per line (long mode)')
+		help='Enable JSON output with either one object per line (short mode) or one value per line (long mode).')
 	parser.add_argument('-o', '--data-offset', type=int, default=0, action='store',
 		help='Offset of the data to show.')
 	parser.add_argument('-H', '--no-header', action='store_true',

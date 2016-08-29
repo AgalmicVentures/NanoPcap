@@ -2,6 +2,7 @@
 
 import argparse
 import datetime
+import json
 import os
 import sys
 
@@ -126,6 +127,77 @@ class PcapSummaryListener(PcapListener):
 			self._formatData(self._dataRatesOrder.max()),
 		))
 
+	def printJsonReport(self):
+		output = {
+			'includedLength': {
+				'n': self._includedLengths.n(),
+				'sum': self._includedLengths.sum(),
+				'average': self._includedLengths.average(),
+				'stddev': self._includedLengths.populationStddev(),
+				'min': self._includedLengthsOrder.min(),
+				'q1': self._includedLengthsOrder.q1(),
+				'median': self._includedLengthsOrder.median(),
+				'q3': self._includedLengthsOrder.q3(),
+				'p95': self._includedLengthsOrder.fractile(0.95),
+				'p99': self._includedLengthsOrder.fractile(0.99),
+				'p999': self._includedLengthsOrder.fractile(0.999),
+				'max': self._includedLengthsOrder.max(),
+			},
+			'originalLength': {
+				'n': self._originalLengths.n(),
+				'sum': self._originalLengths.sum(),
+				'average': self._originalLengths.average(),
+				'stddev': self._originalLengths.populationStddev(),
+				'min': self._originalLengthsOrder.min(),
+				'q1': self._originalLengthsOrder.q1(),
+				'median': self._originalLengthsOrder.median(),
+				'q3': self._originalLengthsOrder.q3(),
+				'p95': self._originalLengthsOrder.fractile(0.95),
+				'p99': self._originalLengthsOrder.fractile(0.99),
+				'p999': self._originalLengthsOrder.fractile(0.999),
+				'max': self._originalLengthsOrder.max(),
+			},
+			'interpacketTime': {
+				'n': self._interpacketNs.n(),
+				'sum': self._interpacketNs.sum(),
+				'average': self._interpacketNs.average(),
+				'stddev': self._interpacketNs.populationStddev(),
+				'min': self._interpacketNsOrder.min(),
+				'q1': self._interpacketNsOrder.q1(),
+				'median': self._interpacketNsOrder.median(),
+				'q3': self._interpacketNsOrder.q3(),
+				'p95': self._interpacketNsOrder.fractile(0.95),
+				'p99': self._interpacketNsOrder.fractile(0.99),
+				'p999': self._interpacketNsOrder.fractile(0.999),
+				'max': self._interpacketNsOrder.max(),
+			},
+			'packetRate': {
+				'n': self._interpacketNs.n(),
+				'average': 1.0e9 / self._interpacketNs.average() if self._interpacketNs.n() > 0 else 999999999.0, #Rather than infinity, because JSON doesn't support it
+				'min': self._packetRatesOrder.min(),
+				'q1': self._packetRatesOrder.q1(),
+				'median': self._packetRatesOrder.median(),
+				'q3': self._packetRatesOrder.q3(),
+				'p95': self._packetRatesOrder.fractile(0.95),
+				'p99': self._packetRatesOrder.fractile(0.99),
+				'p999': self._packetRatesOrder.fractile(0.999),
+				'max': self._packetRatesOrder.max(),
+			},
+			'dataRate': {
+				'n': self._dataRatesOrder.n(),
+				'min': self._dataRatesOrder.min(),
+				'q1': self._dataRatesOrder.q1(),
+				'median': self._dataRatesOrder.median(),
+				'q3': self._dataRatesOrder.q3(),
+				'p95': self._dataRatesOrder.fractile(0.95),
+				'p99': self._dataRatesOrder.fractile(0.99),
+				'p999': self._dataRatesOrder.fractile(0.999),
+				'max': self._dataRatesOrder.max(),
+			},
+		}
+
+		print(json.dumps(output, indent=2, separators=(',', ': '), sort_keys=True))
+
 	def onPcapHeader(self, header):
 		pass #Nothing to do
 
@@ -157,6 +229,8 @@ def main():
 	parser.add_argument('pcap', help='PCAP file to summarize.')
 	parser.add_argument('-H', '--no-header', action='store_true',
 		help='Do not show header.')
+	parser.add_argument('-j', '--json', action='store_true',
+		help='Enable JSON output with one object per line.')
 	parser.add_argument('-s', '--strict', action='store_true',
 		help='Enables strict validation rules.')
 	parser.add_argument('-u', '--use-units', action='store_true',
@@ -166,7 +240,10 @@ def main():
 	listener = PcapSummaryListener(arguments)
 	parseFile(arguments.pcap, listener, strict=arguments.strict)
 
-	listener.printReport()
+	if arguments.json:
+		listener.printJsonReport()
+	else:
+		listener.printReport()
 
 	return 0
 
