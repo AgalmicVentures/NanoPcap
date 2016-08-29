@@ -69,6 +69,10 @@ class PcapFilterListener(Listener.PcapListener):
 		if self._arguments.link_type is not None:
 			recordHeader.setOriginalLength(len(truncatedData))
 
+		#Update with the new timestamp if necessary
+		if self._arguments.time_shift_seconds is not None:
+			recordHeader.setTsSec(recordHeader.tsSec() + self._arguments.time_shift_seconds)
+
 		#Write the header and data
 		recordHeader.writeToFile(self._outputFile)
 		self._outputFile.write(truncatedData)
@@ -105,6 +109,9 @@ def main():
 		help='The required link type of the file being edited (e.g. 1 for Ethernet, 228 for IPv4, 229 for IPv6).')
 	parser.add_argument('--link-type', type=int, default=None, action='store',
 		help='A value to set the link type in the header to (e.g. 1 for Ethernet, 228 for IPv4, 229 for IPv6).')
+
+	parser.add_argument('--time-shift-seconds', type=int, default=None, action='store',
+		help='The amount of time in seconds to shift timestamps in the output PCAP.')
 
 	#Filtering
 	parser.add_argument('-s', '--start', default=None, action='store',
