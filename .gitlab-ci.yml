@@ -13,9 +13,9 @@ stages:
 help_test_job:
   stage: test
   script:
-    - NanoPcap/Tools/PcapDump.py -h
-    - NanoPcap/Tools/PcapFilter.py -h
-    - NanoPcap/Tools/PcapSummary.py -h
+    - NanoPcap/Tools/Dump.py -h
+    - NanoPcap/Tools/Filter.py -h
+    - NanoPcap/Tools/Summary.py -h
   only:
     - master
 
@@ -24,34 +24,34 @@ smoke_test_job:
   script:
     #Dump
     #Short
-    - NanoPcap/Tools/PcapDump.py TestData/EmptyNs.pcap
-    - NanoPcap/Tools/PcapDump.py TestData/SSH_L3.pcap
-    - NanoPcap/Tools/PcapDump.py TestData/SSH2_L3.pcap
+    - NanoPcap/Tools/Dump.py TestData/EmptyNs.pcap
+    - NanoPcap/Tools/Dump.py TestData/SSH_L3.pcap
+    - NanoPcap/Tools/Dump.py TestData/SSH2_L3.pcap
     #Long
-    - NanoPcap/Tools/PcapDump.py -l TestData/EmptyNs.pcap
+    - NanoPcap/Tools/Dump.py -l TestData/EmptyNs.pcap
     #JSON
-    - NanoPcap/Tools/PcapDump.py -j TestData/EmptyNs.pcap
-    - NanoPcap/Tools/PcapDump.py -j TestData/SSH_L3.pcap
-    - NanoPcap/Tools/PcapDump.py -j TestData/SSH2_L3.pcap
+    - NanoPcap/Tools/Dump.py -j TestData/EmptyNs.pcap
+    - NanoPcap/Tools/Dump.py -j TestData/SSH_L3.pcap
+    - NanoPcap/Tools/Dump.py -j TestData/SSH2_L3.pcap
 
     #Filter
     #Pass through
-    - NanoPcap/Tools/PcapFilter.py TestData/EmptyNs.pcap /dev/null
-    - NanoPcap/Tools/PcapFilter.py TestData/SSH_L3.pcap /dev/null
-    - NanoPcap/Tools/PcapFilter.py TestData/SSH2_L3.pcap /dev/null
+    - NanoPcap/Tools/Filter.py TestData/EmptyNs.pcap /dev/null
+    - NanoPcap/Tools/Filter.py TestData/SSH_L3.pcap /dev/null
+    - NanoPcap/Tools/Filter.py TestData/SSH2_L3.pcap /dev/null
     #Randomized drops
-    - NanoPcap/Tools/PcapFilter.py -D 0.75 TestData/SSH_L3.pcap /dev/null
-    - NanoPcap/Tools/PcapFilter.py -D 0.25 TestData/SSH2_L3.pcap /dev/null
+    - NanoPcap/Tools/Filter.py -D 0.75 TestData/SSH_L3.pcap /dev/null
+    - NanoPcap/Tools/Filter.py -D 0.25 TestData/SSH2_L3.pcap /dev/null
 
     #Summary
     #Without units
-    - NanoPcap/Tools/PcapSummary.py TestData/EmptyNs.pcap
-    - NanoPcap/Tools/PcapSummary.py TestData/SSH_L3.pcap
-    - NanoPcap/Tools/PcapSummary.py TestData/SSH2_L3.pcap
+    - NanoPcap/Tools/Summary.py TestData/EmptyNs.pcap
+    - NanoPcap/Tools/Summary.py TestData/SSH_L3.pcap
+    - NanoPcap/Tools/Summary.py TestData/SSH2_L3.pcap
     #With units
-    - NanoPcap/Tools/PcapSummary.py -u TestData/EmptyNs.pcap
-    - NanoPcap/Tools/PcapSummary.py -u TestData/SSH_L3.pcap
-    - NanoPcap/Tools/PcapSummary.py -u TestData/SSH2_L3.pcap
+    - NanoPcap/Tools/Summary.py -u TestData/EmptyNs.pcap
+    - NanoPcap/Tools/Summary.py -u TestData/SSH_L3.pcap
+    - NanoPcap/Tools/Summary.py -u TestData/SSH2_L3.pcap
   only:
     - master
 

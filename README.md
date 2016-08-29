@@ -5,13 +5,13 @@ resolution PCAP data. It is designed to be minimal and require no dependencies.
 
 ## Tools
 
-### `PcapDump`
+### `Dump`
 Dumps a PCAP in either short form (1 line per packet) or long form (1 line per
 value).
 
 	> NanoPcap/Tools/PcapDump.py -h
-	usage: PcapDump.py [-h] [-d DATA_BYTES] [-l] [-o DATA_OFFSET] [-H] [-R] [-s]
-	                   pcap
+	usage: Dump.py [-h] [-d DATA_BYTES] [-l] [-o DATA_OFFSET] [-H] [-R] [-s]
+	               pcap
 
 	PCAP Dump Diagnostic
 
@@ -31,16 +31,16 @@ value).
 	  -R, --no-records      Do not show records.
 	  -s, --strict          Enables strict validation rules.
 
-### `PcapFilter`
+### `Filter`
 Filters a PCAP based on set criteria and optionally does other edits like snapshot
 length truncation.
 
-	> NanoPcap/Tools/PcapFilter.py -h
-	usage: PcapFilter.py [-h] [--strict] [-l SNAPLEN] [-o DATA_OFFSET]
-	                     [-x DATA_END_OFFSET] [-H] [-R] [-a]
-	                     [--link-type LINK_TYPE] [-s START] [-e END]
-	                     [-D DROP_FRACTION]
-	                     input output
+	> NanoPcap/Tools/Filter.py -h
+	usage: Filter.py [-h] [--strict] [-l SNAPLEN] [-o DATA_OFFSET]
+	                 [-x DATA_END_OFFSET] [-H] [-R] [-a]
+	                 [--link-type LINK_TYPE] [-s START] [-e END]
+	                 [-D DROP_FRACTION]
+	                 input output
 
 	PCAP Filter Tool
 
@@ -75,13 +75,13 @@ length truncation.
 
 For example, here is how Ethernet headers (L2) were removed to generate the files in TestData:
 
-	> NanoPcap/Tools/PcapFilter.py SSH.pcap TestData/SSH_L3.pcap -o 14 -x 4 --link-type 228
-	> NanoPcap/Tools/PcapFilter.py SSH2.pcap TestData/SSH2_L3.pcap -o 14 -x 4 --link-type 228
+	> NanoPcap/Tools/Filter.py SSH.pcap TestData/SSH_L3.pcap -o 14 -x 4 --link-type 228
+	> NanoPcap/Tools/Filter.py SSH2.pcap TestData/SSH2_L3.pcap -o 14 -x 4 --link-type 228
 
-### `PcapSummary`
+### `Summary`
 Summarizes a PCAP. For example:
 
-	> NanoPcap/Tools/PcapSummary.py TestData/SSH_L3.pcap
+	> NanoPcap/Tools/Summary.py TestData/SSH_L3.pcap
 	Epoch times: 1472402096321502000 - 1472402096321652000 (150000ns) (2016-08-28 16:34:56.321501 - 2016-08-28 16:34:56.321651)
 
 	Name                          Count            Total        Average        Std Dev            Min         25th %         50th %         75th %         95th %         99th %       99.9th %            Max
@@ -93,7 +93,7 @@ Summarizes a PCAP. For example:
 
 Or with units:
 
-	> NanoPcap/Tools/PcapSummary.py -u TestData/SSH_L3.pcap
+	> NanoPcap/Tools/Summary.py -u TestData/SSH_L3.pcap
 	Epoch times: 1472402228930675000 - 1472402228930905000 (230000ns) (2016-08-28 16:37:08.930675 - 2016-08-28 16:37:08.930905)
 
 	Name                          Count            Total        Average        Std Dev            Min         25th %         50th %         75th %         95th %         99th %       99.9th %            Max
