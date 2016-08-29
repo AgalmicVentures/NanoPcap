@@ -81,6 +81,18 @@ For example, here is how Ethernet headers (L2) were removed to generate the file
 ### `Summary`
 Summarizes a PCAP. For example:
 
+	> NanoPcap/Tools/Summary.py TestData/SSH_L3.pcap -u
+	Epoch times: 1472402096321502000 - 1472402096321652000 (150000ns) (2016-08-28 16:34:56.321501 - 2016-08-28 16:34:56.321651)
+
+	Name                      Count    Total  Average  Std Dev      Min   25th %   50th %   75th %   95th %   99th % 99.9th %      Max
+	Included Length              21     8.6K   421.43   502.94       34       34      102      582     1482     1482     1482     1482
+	Original Length              21     8.6K   421.43   502.94       34       34      102      582     1482     1482     1482     1482
+	Interpacket Time (ns)        20  150.0us    7.5us   20.9us      0.0      0.0    1.0us    1.0us   74.0us   74.0us   74.0us   74.0us
+	Packet Rate (pps)            20            133.3K             13.5K     1.0M      inf      inf      inf      inf      inf      inf
+	Data Rate (Bps)              20                              448.7K   539.8M      inf      inf      inf      inf      inf      inf
+
+Or without units:
+
 	> NanoPcap/Tools/Summary.py TestData/SSH_L3.pcap
 	Epoch times: 1472402096321502000 - 1472402096321652000 (150000ns) (2016-08-28 16:34:56.321501 - 2016-08-28 16:34:56.321651)
 
@@ -90,15 +102,3 @@ Summarizes a PCAP. For example:
 	Interpacket Time (ns)            20         150000.0         7500.0        20884.2            0.0            0.0         1000.0         1000.0        74000.0        74000.0        74000.0        74000.0
 	Packet Rate (pps)                20                        133333.3                       13513.5      1000000.0            inf            inf            inf            inf            inf            inf
 	Data Rate (Bps)                  20                                                      459459.5    566000000.0            inf            inf            inf            inf            inf            inf
-
-Or with units:
-
-	> NanoPcap/Tools/Summary.py -u TestData/SSH_L3.pcap
-	Epoch times: 1472402228930675000 - 1472402228930905000 (230000ns) (2016-08-28 16:37:08.930675 - 2016-08-28 16:37:08.930905)
-
-	Name                          Count            Total        Average        Std Dev            Min         25th %         50th %         75th %         95th %         99th %       99.9th %            Max
-	Included Length                  20             6.8K         348.80         491.01             34             34            118            550           1482           1482           1482           1482
-	Original Length                  20             6.8K         348.80         491.01             34             34            118            550           1482           1482           1482           1482
-	Interpacket Time (ns)            19          230.0us         12.1us         20.4us            0.0            0.0          1.0us         21.0us         68.0us         68.0us         68.0us         68.0us
-	Packet Rate (pps)                19                           82.6K                         14.7K          47.6K           1.0M            inf            inf            inf            inf            inf
-	Data Rate (Bps)                  19                                                        488.3K          13.2M         506.4M            inf            inf            inf            inf            inf

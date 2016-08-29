@@ -44,7 +44,7 @@ class PcapSummaryListener(PcapListener):
 		return Units.formatUnits(value, Units.UNITS_TIME, useUnits=self._arguments.use_units)
 
 	def printReport(self):
-		formatString = '%-24s %10s %16s %14s %14s %14s %14s %14s %14s %14s %14s %14s %14s'
+		formatString = '%-22s %10s %16s %14s %14s %14s %14s %14s %14s %14s %14s %14s %14s' if not self._arguments.use_units else '%-22s %8s %8s %8s %8s %8s %8s %8s %8s %8s %8s %8s %8s'
 		if not self._arguments.no_header:
 			if self._epochNsOrder.n() > 0:
 				print('Epoch times: %d - %d (%dns) (%s - %s)' % (
