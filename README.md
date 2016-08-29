@@ -75,8 +75,12 @@ length truncation.
 
 For example, here is how Ethernet headers (L2) were removed to generate the files in TestData:
 
-	> NanoPcap/Tools/Filter.py SSH.pcap TestData/SSH_L3.pcap -o 14 -x 4 --link-type 228
-	> NanoPcap/Tools/Filter.py SSH2.pcap TestData/SSH2_L3.pcap -o 14 -x 4 --link-type 228
+	> NanoPcap/Tools/Filter.py --required-link-type 1 --link-type 228 -o 14 -x 4 SSH.pcap TestData/SSH_L3.pcap
+	> NanoPcap/Tools/Filter.py --required-link-type 1 --link-type 228 -o 14 -x 4 SSH2.pcap TestData/SSH2_L3.pcap
+
+There is also a convenience script for that transformation:
+
+	> ./strip_ethernet_header.sh SSH.pcap TestData/SSH_L3.pcap
 
 ### `Summary`
 Summarizes a PCAP. For example:
