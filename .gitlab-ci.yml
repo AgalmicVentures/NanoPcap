@@ -15,6 +15,7 @@ help_test_job:
   script:
     - NanoPcap/Tools/Dump.py -h
     - NanoPcap/Tools/Filter.py -h
+    - NanoPcap/Tools/Merge.py -h
     - NanoPcap/Tools/Summary.py -h
   only:
     - master
@@ -42,6 +43,9 @@ smoke_test_job:
     #Randomized drops
     - NanoPcap/Tools/Filter.py -D 0.75 TestData/SSH_L3.pcap /dev/null
     - NanoPcap/Tools/Filter.py -D 0.25 TestData/SSH2_L3.pcap /dev/null
+
+    #Merge
+    - NanoPcap/Tools/Summary.py TestData/SSH_L3.pcap TestData/SSH2_L3.pcap /dev/null
 
     #Summary
     #Without units
