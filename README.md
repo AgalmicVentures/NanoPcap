@@ -9,8 +9,8 @@ resolution PCAP data. It is designed to be minimal and require no dependencies.
 Dumps a PCAP in either short form (1 line per packet) or long form (1 line per
 value).
 
-	> NanoPcap/Tools/PcapDump.py -h
-	usage: Dump.py [-h] [-d DATA_BYTES] [-l] [-o DATA_OFFSET] [-H] [-R] [-s]
+	> NanoPcap/Tools/Dump.py -h
+	usage: Dump.py [-h] [-d DATA_BYTES] [-l] [-j] [-o DATA_OFFSET] [-H] [-R] [-s]
 	               pcap
 
 	PCAP Dump Diagnostic
@@ -25,6 +25,8 @@ value).
 	                        record.
 	  -l, --long            Enable long form which generally puts one value per
 	                        line for easy diffing.
+	  -j, --json            Enable JSON output with either one object per line
+	                        (short mode) or one value per line (long mode).
 	  -o DATA_OFFSET, --data-offset DATA_OFFSET
 	                        Offset of the data to show.
 	  -H, --no-header       Do not show the header.
@@ -38,7 +40,9 @@ length truncation.
 	> NanoPcap/Tools/Filter.py -h
 	usage: Filter.py [-h] [--strict] [-l SNAPLEN] [-o DATA_OFFSET]
 	                 [-x DATA_END_OFFSET] [-H] [-R] [-a]
-	                 [--link-type LINK_TYPE] [-s START] [-e END]
+	                 [--required-link-type REQUIRED_LINK_TYPE]
+	                 [--link-type LINK_TYPE]
+	                 [--time-shift-seconds TIME_SHIFT_SECONDS] [-s START] [-e END]
 	                 [-D DROP_FRACTION]
 	                 input output
 
@@ -60,9 +64,15 @@ length truncation.
 	  -H, --no-header       Do not output the header.
 	  -R, --no-records      Do not output records.
 	  -a, --append          Append to the file (implies no header).
+	  --required-link-type REQUIRED_LINK_TYPE
+	                        The required link type of the file being edited (e.g.
+	                        1 for Ethernet, 228 for IPv4, 229 for IPv6).
 	  --link-type LINK_TYPE
 	                        A value to set the link type in the header to (e.g. 1
 	                        for Ethernet, 228 for IPv4, 229 for IPv6).
+	  --time-shift-seconds TIME_SHIFT_SECONDS
+	                        The amount of time in seconds to shift timestamps in
+	                        the output PCAP.
 	  -s START, --start START
 	                        Start time as either epoch nanoseconds or a datetime
 	                        (with only microsecond resolution).

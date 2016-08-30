@@ -254,6 +254,15 @@ class PcapRecordHeader(object):
 		"""
 		return self._tsSec
 
+	#TODO: Not thrilled about making these not immutable -- figure out how to make that efficient
+	def setTsSec(self, tsSec):
+		"""
+		Sets the time stamp seconds.
+
+		:param tsSec: int
+		"""
+		self._tsSec = tsSec
+
 	def tsFrac(self):
 		"""
 		Returns the fraction portion of the timestamp.
