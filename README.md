@@ -92,6 +92,23 @@ There is also a convenience script for that transformation:
 
 	> ./strip_ethernet_header.sh SSH.pcap TestData/SSH_L3.pcap
 
+### `Merge`
+Merges two PCAP files with potentially interleaved timestamps.
+
+	> NanoPcap/Tools/Merge.py -h
+	usage: Merge.py [-h] [--strict] input1 input2 output
+
+	PCAP Filter Tool
+
+	positional arguments:
+	  input1      PCAP file to use as input.
+	  input2      PCAP file to use as other input.
+	  output      Output file
+
+	optional arguments:
+	  -h, --help  show this help message and exit
+	  --strict    Enables strict validation rules.
+
 ### `Summary`
 Summarizes a PCAP. For example:
 
