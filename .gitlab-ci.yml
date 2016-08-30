@@ -45,7 +45,7 @@ smoke_test_job:
     - NanoPcap/Tools/Filter.py -D 0.25 TestData/SSH2_L3.pcap /dev/null
 
     #Merge
-    - NanoPcap/Tools/Summary.py TestData/SSH_L3.pcap TestData/SSH2_L3.pcap /dev/null
+    - NanoPcap/Tools/Merge.py TestData/SSH_L3.pcap TestData/SSH2_L3.pcap /dev/null
 
     #Summary
     #Without units
