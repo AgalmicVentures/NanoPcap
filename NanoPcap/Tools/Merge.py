@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
-import datetime
 import os
-import random
 import sys
 
 import inspect
@@ -12,7 +10,7 @@ _currentDir = os.path.dirname(_currentFile)
 _parentDir = os.path.dirname(os.path.dirname(_currentDir))
 sys.path.insert(0, _parentDir)
 
-from NanoPcap import Listener, Parser
+from NanoPcap import Parser
 
 def main():
 	parser = argparse.ArgumentParser(description='PCAP Filter Tool')
