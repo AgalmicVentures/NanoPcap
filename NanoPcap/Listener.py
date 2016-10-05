@@ -59,7 +59,7 @@ class PcapRecordingListener(object):
 
 	def onPcapHeader(self, header):
 		if self._header is not None:
-			raise RuntimeError('Tried to call PcapRecordingListener.on_pcap_header twice')
+			raise RuntimeError('Tried to call PcapRecordingListener.onPcapHeader twice')
 
 		self._header = header
 
