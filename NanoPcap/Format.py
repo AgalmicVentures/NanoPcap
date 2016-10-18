@@ -51,6 +51,8 @@ class PcapHeader(object):
 	:param network: int The network type ID.
 	"""
 
+	__slots__ = ['_magicNumber', '_timeResolution', '_versionMajor', '_versionMinor', '_tzOffset', '_sigfigs', '_snaplen', '_network']
+
 	def __init__(self, magicNumber, versionMajor, versionMinor, tzOffset, sigfigs, snaplen, network):
 		if magicNumber < 0:
 			raise ValueError('magicNumber must not be negative')
@@ -201,6 +203,8 @@ class PcapRecordHeader(object):
 	:param fileHeader: PcapHeader The file's header (optional).
 	:param strict: bool Flag indicating whether to validate strictly (default False).
 	"""
+
+	__slots__ = ['_fileHeader', '_tsSec', '_tsFrac', '_includedLength', '_originalLength']
 
 	def __init__(self, tsSec, tsFrac, includedLength, originalLength, fileHeader=None, strict=False):
 		#Basic validation for types

@@ -7,6 +7,8 @@ class OrderStatistics(object):
 	pulling in dependencies for simple projects).
 	"""
 
+	__slots__ = ['_samples', '_dirty']
+
 	def __init__(self):
 		self.reset()
 
@@ -100,6 +102,8 @@ class SummaryStatistics(object):
 	Represents simple summary statistics on a set of data (useful to avoid
 	pulling in dependencies for simple projects).
 	"""
+
+	__slots__ = ['_n', '_sum', '_average', '_m2']
 
 	def __init__(self):
 		self.reset()
