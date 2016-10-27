@@ -1,4 +1,6 @@
 
+import gzip
+
 from NanoPcap import Format
 
 class PcapParser(object):
@@ -69,7 +71,7 @@ def parseFile(filename, listener, strict=False):
 	:param listener: PcapListener
 	:param strict: bool Indicating strict validation
 	"""
-	with open(filename, 'rb') as pcapFile:
+	with gzip.open(filename, 'rb') if filename.endswith('.gz') else open(filename, 'rb') as pcapFile:
 		parse(pcapFile, listener, strict=strict)
 
 def parse(pcapFile, listener, strict=False):

@@ -28,6 +28,7 @@ smoke_test_job:
     - NanoPcap/Tools/Dump.py TestData/EmptyNs.pcap
     - NanoPcap/Tools/Dump.py TestData/SSH_L3.pcap
     - NanoPcap/Tools/Dump.py TestData/SSH2_L3.pcap
+    - NanoPcap/Tools/Dump.py -j TestData/Empty.pcap.gz #Gzipped
     #Long
     - NanoPcap/Tools/Dump.py -l TestData/EmptyNs.pcap
     #JSON
