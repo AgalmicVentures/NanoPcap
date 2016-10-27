@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import gzip
 import os
 import sys
 
@@ -25,7 +26,8 @@ def main():
 
 	arguments = parser.parse_args(sys.argv[1:])
 
-	with open(arguments.input1, 'rb') as inputFile1, open(arguments.input2, 'rb') as inputFile2:
+	with gzip.open(arguments.input1, 'rb') if arguments.input1.endswith('.gz') else open(arguments.input1, 'rb') as inputFile1, \
+			gzip.open(arguments.input2, 'rb') if arguments.input2.endswith('.gz') else open(arguments.input2, 'rb') as inputFile2:
 		parser1 = Parser.PcapParser(inputFile1, strict=arguments.strict)
 		iterator1 = parser1.parse()
 
