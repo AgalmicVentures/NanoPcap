@@ -35,14 +35,14 @@ class PcapSummaryListener(PcapListener):
 		self._packetRatesOrder = Statistics.OrderStatistics()
 		self._dataRatesOrder = Statistics.OrderStatistics()
 
-	def _formatRate1000(self, value):
-		return Units.formatUnits(value, Units.UNITS_1000, useUnits=self._arguments.use_units)
+	def _formatRate1000(self, value, precision=1):
+		return Units.formatUnits(value, Units.UNITS_1000, useUnits=self._arguments.use_units, precision=precision)
 
-	def _formatRate1024(self, value):
-		return Units.formatUnits(value, Units.UNITS_1024, useUnits=self._arguments.use_units)
+	def _formatRate1024(self, value, precision=1):
+		return Units.formatUnits(value, Units.UNITS_1024, useUnits=self._arguments.use_units, precision=precision)
 
-	def _formatTime(self, value):
-		return Units.formatUnits(value, Units.UNITS_TIME, useUnits=self._arguments.use_units)
+	def _formatTime(self, value, precision=1):
+		return Units.formatUnits(value, Units.UNITS_TIME, useUnits=self._arguments.use_units, precision=precision)
 
 	def printReport(self):
 		formatString = '%-22s %10s %16s %14s %14s %14s %14s %14s %14s %14s %14s %14s %14s' if not self._arguments.use_units else '%-22s %8s %8s %8s %8s %8s %8s %8s %8s %8s %8s %8s %8s'
@@ -131,13 +131,18 @@ class PcapSummaryListener(PcapListener):
 
 		#Compute the minimum line rate that would accomodate this data rate
 		#NOTE: line rates are in bits per second, hence the multiplication
-		maxDataRate = self._dataRatesOrder.max() * 8
-		nextPowerOf10DataRate = 10 ** math.ceil(math.log10(maxDataRate))
-		maxDataRateFraction = maxDataRate / nextPowerOf10DataRate
-		print('Based on the maximum data rate, the line rate must be at least: %s with peak utilization of %.1f%%' % (
-			self._formatRate1000(nextPowerOf10DataRate), 100.0 * maxDataRateFraction))
-		if maxDataRateFraction > 0.8:
-			print('WARNING: Peak data rates are approaching the limit of your line')
+		maxDataRate = self._dataRatesOrder.max()
+		if maxDataRate is None:
+			return
+		if math.isinf(maxDataRate):
+			print('Based on the infinite maximum data rate, are there multiple interfaces in this capture?')
+		else:
+			nextPowerOf10DataRate = 10 ** math.ceil(math.log10(maxDataRate * 8))
+			maxDataRateFraction = maxDataRate / nextPowerOf10DataRate
+			print('Based on the maximum data rate, the line rate must be at least: %s with peak utilization of %.1f%%' % (
+				self._formatRate1000(nextPowerOf10DataRate, precision=0), 100.0 * maxDataRateFraction))
+			if maxDataRateFraction > 0.8:
+				print('WARNING: Peak data rates are approaching the limit of your line')
 
 	def printJsonReport(self):
 		output = {
