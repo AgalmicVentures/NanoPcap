@@ -58,12 +58,11 @@ class PcapDumpListener(Listener.PcapListener):
 				header.snaplen(),
 				header.network(),
 			))
-
-	def onPcapRecord(self, recordHeader, data):
 		if self._arguments.no_records:
 			#No need to continue processing the rest of the file, and no simpler way to exit
 			sys.exit(0)
 
+	def onPcapRecord(self, recordHeader, data):
 		if self._arguments.data_bytes > 0:
 			truncatedData = data[self._arguments.data_offset:self._arguments.data_offset+self._arguments.data_bytes]
 			dataOutput = '%s' % ' '.join('%.2X' % b for b in truncatedData)
