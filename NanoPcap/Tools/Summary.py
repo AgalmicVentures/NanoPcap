@@ -3,6 +3,7 @@
 import argparse
 import datetime
 import json
+import math
 import os
 import sys
 
@@ -34,11 +35,11 @@ class PcapSummaryListener(PcapListener):
 		self._packetRatesOrder = Statistics.OrderStatistics()
 		self._dataRatesOrder = Statistics.OrderStatistics()
 
-	def _formatData(self, value):
-		return Units.formatUnits(value, Units.UNITS_1024, useUnits=self._arguments.use_units)
-
-	def _formatPacketRate(self, value):
+	def _formatRate1000(self, value):
 		return Units.formatUnits(value, Units.UNITS_1000, useUnits=self._arguments.use_units)
+
+	def _formatRate1024(self, value):
+		return Units.formatUnits(value, Units.UNITS_1024, useUnits=self._arguments.use_units)
 
 	def _formatTime(self, value):
 		return Units.formatUnits(value, Units.UNITS_TIME, useUnits=self._arguments.use_units)
@@ -58,7 +59,7 @@ class PcapSummaryListener(PcapListener):
 
 		print(formatString % ('Included Length',
 			self._includedLengths.n(),
-			self._formatData(self._includedLengths.sum()),
+			self._formatRate1024(self._includedLengths.sum()),
 			'%.2f' % self._includedLengths.average(),
 			'%.2f' % self._includedLengths.populationStddev(),
 			self._includedLengthsOrder.min(),
@@ -72,7 +73,7 @@ class PcapSummaryListener(PcapListener):
 		))
 		print(formatString % ('Original Length',
 			self._originalLengths.n(),
-			self._formatData(self._originalLengths.sum()),
+			self._formatRate1024(self._originalLengths.sum()),
 			'%.2f' % self._originalLengths.average(),
 			'%.2f' % self._originalLengths.populationStddev(),
 			self._originalLengthsOrder.min(),
@@ -101,31 +102,42 @@ class PcapSummaryListener(PcapListener):
 		print(formatString % ('Packet Rate (pps)',
 			self._interpacketNs.n(),
 			'',
-			self._formatPacketRate(1.0e9 / self._interpacketNs.average() if self._interpacketNs.n() > 0 else float('inf')),
+			self._formatRate1000(1.0e9 / self._interpacketNs.average() if self._interpacketNs.n() > 0 else float('inf')),
 			'',
-			self._formatPacketRate(self._packetRatesOrder.min()),
-			self._formatPacketRate(self._packetRatesOrder.q1()),
-			self._formatPacketRate(self._packetRatesOrder.median()),
-			self._formatPacketRate(self._packetRatesOrder.q3()),
-			self._formatPacketRate(self._packetRatesOrder.fractile(0.95)),
-			self._formatPacketRate(self._packetRatesOrder.fractile(0.99)),
-			self._formatPacketRate(self._packetRatesOrder.fractile(0.999)),
-			self._formatPacketRate(self._packetRatesOrder.max()),
+			self._formatRate1000(self._packetRatesOrder.min()),
+			self._formatRate1000(self._packetRatesOrder.q1()),
+			self._formatRate1000(self._packetRatesOrder.median()),
+			self._formatRate1000(self._packetRatesOrder.q3()),
+			self._formatRate1000(self._packetRatesOrder.fractile(0.95)),
+			self._formatRate1000(self._packetRatesOrder.fractile(0.99)),
+			self._formatRate1000(self._packetRatesOrder.fractile(0.999)),
+			self._formatRate1000(self._packetRatesOrder.max()),
 		))
 		print(formatString % ('Data Rate (Bps)',
 			self._dataRatesOrder.n(),
 			'',
 			'',
 			'',
-			self._formatData(self._dataRatesOrder.min()),
-			self._formatData(self._dataRatesOrder.q1()),
-			self._formatData(self._dataRatesOrder.median()),
-			self._formatData(self._dataRatesOrder.q3()),
-			self._formatData(self._dataRatesOrder.fractile(0.95)),
-			self._formatData(self._dataRatesOrder.fractile(0.99)),
-			self._formatData(self._dataRatesOrder.fractile(0.999)),
-			self._formatData(self._dataRatesOrder.max()),
+			self._formatRate1024(self._dataRatesOrder.min()),
+			self._formatRate1024(self._dataRatesOrder.q1()),
+			self._formatRate1024(self._dataRatesOrder.median()),
+			self._formatRate1024(self._dataRatesOrder.q3()),
+			self._formatRate1024(self._dataRatesOrder.fractile(0.95)),
+			self._formatRate1024(self._dataRatesOrder.fractile(0.99)),
+			self._formatRate1024(self._dataRatesOrder.fractile(0.999)),
+			self._formatRate1024(self._dataRatesOrder.max()),
 		))
+		print()
+
+		#Compute the minimum line rate that would accomodate this data rate
+		#NOTE: line rates are in bits per second, hence the multiplication
+		maxDataRate = self._dataRatesOrder.max() * 8
+		nextPowerOf10DataRate = 10 ** math.ceil(math.log10(maxDataRate))
+		maxDataRateFraction = maxDataRate / nextPowerOf10DataRate
+		print('Based on the maximum data rate, the line rate must be at least: %s with peak utilization of %.1f%%' % (
+			self._formatRate1000(nextPowerOf10DataRate), 100.0 * maxDataRateFraction))
+		if maxDataRateFraction > 0.8:
+			print('WARNING: Peak data rates are approaching the limit of your line')
 
 	def printJsonReport(self):
 		output = {
