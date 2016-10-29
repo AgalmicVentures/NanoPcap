@@ -130,19 +130,19 @@ class PcapSummaryListener(PcapListener):
 		print()
 
 		#Compute the minimum line rate that would accomodate this data rate
-		#NOTE: line rates are in bits per second, hence the multiplication
 		maxDataRate = self._dataRatesOrder.max()
 		if maxDataRate is None:
 			return
 		if math.isinf(maxDataRate):
 			print('Based on the infinite maximum data rate, are there multiple interfaces in this capture?')
 		else:
+			#NOTE: line rates are in bits per second, hence the multiplication
 			nextPowerOf10DataRate = 10 ** math.ceil(math.log10(maxDataRate * 8))
 			maxDataRateFraction = maxDataRate / nextPowerOf10DataRate
 			print('Based on the maximum data rate, the line rate must be at least: %s with peak utilization of %.1f%%' % (
 				self._formatRate1000(nextPowerOf10DataRate, precision=0), 100.0 * maxDataRateFraction))
 			if maxDataRateFraction > 0.8:
-				print('WARNING: Peak data rates are approaching the limit of your line')
+				print('WARNING: Peak data rates may be approaching the limit of your line')
 
 	def printJsonReport(self):
 		output = {
@@ -155,6 +155,7 @@ class PcapSummaryListener(PcapListener):
 				'q1': self._includedLengthsOrder.q1(),
 				'median': self._includedLengthsOrder.median(),
 				'q3': self._includedLengthsOrder.q3(),
+				'p90': self._includedLengthsOrder.fractile(0.90),
 				'p95': self._includedLengthsOrder.fractile(0.95),
 				'p99': self._includedLengthsOrder.fractile(0.99),
 				'p999': self._includedLengthsOrder.fractile(0.999),
@@ -169,6 +170,7 @@ class PcapSummaryListener(PcapListener):
 				'q1': self._originalLengthsOrder.q1(),
 				'median': self._originalLengthsOrder.median(),
 				'q3': self._originalLengthsOrder.q3(),
+				'p90': self._originalLengthsOrder.fractile(0.90),
 				'p95': self._originalLengthsOrder.fractile(0.95),
 				'p99': self._originalLengthsOrder.fractile(0.99),
 				'p999': self._originalLengthsOrder.fractile(0.999),
@@ -183,6 +185,7 @@ class PcapSummaryListener(PcapListener):
 				'q1': self._interpacketNsOrder.q1(),
 				'median': self._interpacketNsOrder.median(),
 				'q3': self._interpacketNsOrder.q3(),
+				'p90': self._interpacketNsOrder.fractile(0.90),
 				'p95': self._interpacketNsOrder.fractile(0.95),
 				'p99': self._interpacketNsOrder.fractile(0.99),
 				'p999': self._interpacketNsOrder.fractile(0.999),
@@ -195,6 +198,7 @@ class PcapSummaryListener(PcapListener):
 				'q1': self._packetRatesOrder.q1(),
 				'median': self._packetRatesOrder.median(),
 				'q3': self._packetRatesOrder.q3(),
+				'p90': self._packetRatesOrder.fractile(0.90),
 				'p95': self._packetRatesOrder.fractile(0.95),
 				'p99': self._packetRatesOrder.fractile(0.99),
 				'p999': self._packetRatesOrder.fractile(0.999),
@@ -206,6 +210,7 @@ class PcapSummaryListener(PcapListener):
 				'q1': self._dataRatesOrder.q1(),
 				'median': self._dataRatesOrder.median(),
 				'q3': self._dataRatesOrder.q3(),
+				'p90': self._dataRatesOrder.fractile(0.90),
 				'p95': self._dataRatesOrder.fractile(0.95),
 				'p99': self._dataRatesOrder.fractile(0.99),
 				'p999': self._dataRatesOrder.fractile(0.999),
