@@ -19,6 +19,8 @@ class PcapFilterListener(Listener.PcapListener):
 	def __init__(self, arguments):
 		self._arguments = arguments
 
+		self._lastPacketDatas = []
+
 	def onPcapHeader(self, header):
 		if self._arguments.no_header or self._arguments.append:
 			return
@@ -60,6 +62,20 @@ class PcapFilterListener(Listener.PcapListener):
 		#Drop?
 		if self._arguments.drop_fraction > 0 and random.random() < self._arguments.drop_fraction:
 			return
+
+		#De-duplicate
+		if self._arguments.deduplication_windows > 0:
+			found = False
+			for packetData in self._lastPacketDatas:
+				if packetData == data:
+					found = True
+					break
+
+			self._lastPacketDatas.append(data)
+			if len(self._lastPacketDatas) > self._arguments.deduplication_windows:
+				self._lastPacketDatas.pop(0)
+			if found:
+				return
 
 		#Update with new snaplen
 		start = self._arguments.data_offset
@@ -128,6 +144,8 @@ def main():
 		help='Fraction of the time to drop packagets (from 0 to 1 inclusive).')
 	parser.add_argument('--duplicate-fraction', type=float, default=0.0, action='store',
 		help='Fraction of the time to duplicate packagets (from 0 to 1 inclusive).')
+	parser.add_argument('--deduplication-window', type=int, default=0, action='store',
+		help='Sets the number of the packets in the deduplication window (based on contents).')
 
 	arguments = parser.parse_args(sys.argv[1:])
 
