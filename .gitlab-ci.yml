@@ -57,7 +57,7 @@ smoke_test_job:
     - NanoPcap/Tools/Merge.py TestData/SSH_L3.pcap TestData/SSH_L3.pcap TestData/SSH_L3_DuplicateMerge.pcap
     #TODO: - diff TestData/SSH_L3_Duplicate.pcap TestData/SSH_L3_DuplicateMerge.NanoPcap
     #Deduplicated duplicated file = file
-    - NanoPcap/Tools/Filter.py --deduplicate 5 TestData/SSH_L3_DuplicateMerge.pcap TestData/SSH_L3_DuplicateMerge_Deduplicated.pcap
+    - NanoPcap/Tools/Filter.py --deduplication-window 5 TestData/SSH_L3_DuplicateMerge.pcap TestData/SSH_L3_DuplicateMerge_Deduplicated.pcap
     - diff TestData/SSH_L3.pcap TestData/SSH_L3_DuplicateMerge_Deduplicated.pcap
     #More advanced merge
     - NanoPcap/Tools/Merge.py TestData/SSH_L3.pcap TestData/SSH2_L3.pcap /dev/null
