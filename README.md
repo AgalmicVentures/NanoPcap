@@ -35,7 +35,7 @@ value).
 
 ### `Filter`
 Filters a PCAP based on set criteria and optionally does other edits like snapshot
-length truncation.
+length truncation, packet deduplication, or even fuzzing like random drops and duplication.
 
 	> NanoPcap/Tools/Filter.py -h
 	usage: Filter.py [-h] [--strict] [-l SNAPLEN] [-o DATA_OFFSET]
@@ -43,7 +43,8 @@ length truncation.
 	                 [--required-link-type REQUIRED_LINK_TYPE]
 	                 [--link-type LINK_TYPE]
 	                 [--time-shift-seconds TIME_SHIFT_SECONDS] [-s START] [-e END]
-	                 [-D DROP_FRACTION]
+	                 [-D DROP_FRACTION] [--duplicate-fraction DUPLICATE_FRACTION]
+	                 [--deduplication-window DEDUPLICATION_WINDOW]
 	                 input output
 
 	PCAP Filter Tool
@@ -82,6 +83,12 @@ length truncation.
 	  -D DROP_FRACTION, --drop-fraction DROP_FRACTION
 	                        Fraction of the time to drop packagets (from 0 to 1
 	                        inclusive).
+	  --duplicate-fraction DUPLICATE_FRACTION
+	                        Fraction of the time to duplicate packagets (from 0 to
+	                        1 inclusive).
+	  --deduplication-window DEDUPLICATION_WINDOW
+	                        Sets the number of the packets in the deduplication
+	                        window (based on contents).
 
 For example, here is how Ethernet headers (L2) were removed to generate the files in TestData:
 
