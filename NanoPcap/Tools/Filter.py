@@ -57,7 +57,7 @@ class PcapFilterListener(Listener.PcapListener):
 		if self._arguments.end is not None and epochTime > self._arguments.end:
 			return
 
-		#Drop
+		#Drop?
 		if self._arguments.drop_fraction > 0 and random.random() < self._arguments.drop_fraction:
 			return
 
@@ -76,6 +76,11 @@ class PcapFilterListener(Listener.PcapListener):
 		#Write the header and data
 		recordHeader.writeToFile(self._outputFile)
 		self._outputFile.write(truncatedData)
+
+		#Duplicate?
+		if self._arguments.duplicate_fraction > 0 and random.random() < self._arguments.duplicate_fraction:
+			recordHeader.writeToFile(self._outputFile)
+			self._outputFile.write(truncatedData)
 
 def datetimeToEpochNanos(dt):
 	seconds = (dt - datetime.datetime(1970, 1, 1)).total_seconds()
@@ -121,6 +126,8 @@ def main():
 
 	parser.add_argument('-D', '--drop-fraction', type=float, default=0.0, action='store',
 		help='Fraction of the time to drop packagets (from 0 to 1 inclusive).')
+	parser.add_argument('--duplicate-fraction', type=float, default=0.0, action='store',
+		help='Fraction of the time to duplicate packagets (from 0 to 1 inclusive).')
 
 	arguments = parser.parse_args(sys.argv[1:])
 
