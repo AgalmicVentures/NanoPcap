@@ -64,7 +64,7 @@ class PcapFilterListener(Listener.PcapListener):
 			return
 
 		#De-duplicate
-		if self._arguments.deduplication_windows > 0:
+		if self._arguments.deduplication_window > 0:
 			found = False
 			for packetData in self._lastPacketDatas:
 				if packetData == data:
@@ -72,7 +72,7 @@ class PcapFilterListener(Listener.PcapListener):
 					break
 
 			self._lastPacketDatas.append(data)
-			if len(self._lastPacketDatas) > self._arguments.deduplication_windows:
+			if len(self._lastPacketDatas) > self._arguments.deduplication_window:
 				self._lastPacketDatas.pop(0)
 			if found:
 				return
