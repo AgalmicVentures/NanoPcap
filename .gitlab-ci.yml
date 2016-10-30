@@ -44,8 +44,18 @@ smoke_test_job:
     #Randomized drops
     - NanoPcap/Tools/Filter.py -D 0.75 TestData/SSH_L3.pcap /dev/null
     - NanoPcap/Tools/Filter.py -D 0.25 TestData/SSH2_L3.pcap /dev/null
+    #Randomized duplicates
+    - NanoPcap/Tools/Filter.py --duplicate-fraction 0.5 TestData/SSH_L3.pcap /dev/null
+    - NanoPcap/Tools/Filter.py --duplicate-fraction 1.0 TestData/SSH_L3.pcap TestData/SSH_L3_Duplicate.pcap
 
     #Merge
+    #File + empty = file
+    - NanoPcap/Tools/Merge.py TestData/SSH_L3.pcap TestData/Empty.pcap TestData/SSH_L3_Copy.pcap
+    - diff TestData/SSH_L3.pcap TestData/SSH_L3_Copy.pcap
+    #File + file = duplicated file
+    - NanoPcap/Tools/Merge.py TestData/SSH_L3.pcap TestData/SSH_L3.pcap TestData/SSH_L3_DuplicateMerge.pcap
+    - diff TestData/SSH_L3_Duplicate.pcap TestData/SSH_L3_DuplicateMerge.pcap
+    #More advanced merge
     - NanoPcap/Tools/Merge.py TestData/SSH_L3.pcap TestData/SSH2_L3.pcap /dev/null
 
     #Summary

@@ -63,6 +63,13 @@ def main():
 					outputFile.write(nextData2)
 					next2 = None
 
+			if next1 is not None:
+				next1.writeToFile(outputFile)
+				outputFile.write(nextData1)
+			if next2 is not None:
+				next2.writeToFile(outputFile)
+				outputFile.write(nextData2)
+
 			#Dump any remaining (only one of these loops will do anything)
 			for next, nextData in iterator1:
 				next.writeToFile(outputFile)
