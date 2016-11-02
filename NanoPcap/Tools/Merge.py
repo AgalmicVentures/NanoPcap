@@ -36,7 +36,7 @@ def main():
 
 		#TODO: validate link types, snap lengths, etc.
 
-		with open(arguments.output, 'wb') as outputFile:
+		with gzip.open(arguments.output, 'wb') if arguments.output.endswith('.gz') else open(arguments.output, 'wb') as outputFile:
 			#Output the header
 			parser1.header().writeToFile(outputFile)
 
