@@ -20,8 +20,12 @@ class PcapFilterListener(Listener.PcapListener):
 		self._arguments = arguments
 
 		self._lastPacketDatas = []
+		self._outputFileName = None
+		self._outputFile = None
+		self._header = None
 
 	def onPcapHeader(self, header):
+		self._header = header
 		if self._arguments.no_header or self._arguments.append:
 			return
 
@@ -36,15 +40,11 @@ class PcapFilterListener(Listener.PcapListener):
 
 		#Update with new snaplen
 		snaplen = min(self._arguments.snaplen, header.snaplen())
-		header.setSnaplen(snaplen)
+		self._header.setSnaplen(snaplen)
 
 		#Update with the new link link
 		if self._arguments.link_type is not None:
-			header.setNetwork(self._arguments.link_type)
-
-		#Write to the output file
-		self._outputFile = open(self._arguments.output, 'ab' if self._arguments.append else 'wb')
-		header.writeToFile(self._outputFile)
+			self._header.setNetwork(self._arguments.link_type)
 
 	def onPcapRecord(self, recordHeader, data):
 		if self._arguments.no_records:
@@ -76,6 +76,19 @@ class PcapFilterListener(Listener.PcapListener):
 				self._lastPacketDatas.pop(0)
 			if found:
 				return
+
+		#Roll the file if necessary
+		newOutputFileName = recordHeader.timestampDatetime().strftime(self._arguments.output)
+		if newOutputFileName != self._outputFileName:
+			if self._outputFile is not None:
+				self._outputFile.close()
+
+			#Write to the output file
+			self._outputFileName = newOutputFileName
+			self._outputFile = open(self._outputFileName, 'ab' if self._arguments.append else 'wb')
+			#TODO: should this write the header in append mode if there is nothing yet in the file?
+			if not (self._arguments.no_header or self._arguments.append):
+				self._header.writeToFile(self._outputFile)
 
 		#Update with new snaplen
 		start = self._arguments.data_offset
