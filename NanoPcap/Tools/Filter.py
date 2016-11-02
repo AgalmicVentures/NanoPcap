@@ -85,6 +85,10 @@ class PcapFilterListener(Listener.PcapListener):
 
 			#Write to the output file
 			self._outputFileName = newOutputFileName
+			directory, fileName = os.path.split(self._outputFileName)
+			if not os.path.exists(directory):
+				os.makedirs(directory)
+
 			self._outputFile = open(self._outputFileName, 'ab' if self._arguments.append else 'wb')
 			#TODO: should this write the header in append mode if there is nothing yet in the file?
 			if not (self._arguments.no_header or self._arguments.append):
