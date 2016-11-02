@@ -48,6 +48,10 @@ smoke_test_job:
     #Randomized duplicates
     - NanoPcap/Tools/Filter.py --duplicate-fraction 0.5 TestData/SSH_L3.pcap /dev/null
     - NanoPcap/Tools/Filter.py --duplicate-fraction 1.0 TestData/SSH_L3.pcap TestData/SSH_L3_Duplicate.pcap
+    #Round trip through gzip
+    - NanoPcap/Tools/Filter.py TestData/SSH_L3.pcap TestData/SSH_L3.pcap.gz
+    - NanoPcap/Tools/Filter.py TestData/SSH_L3.pcap.gz TestData/SSH_L3_Gzip.pcap
+    - diff TestData/SSH_L3.pcap TestData/SSH_L3_Gzip.pcap
 
     #Merge
     #File + empty = file
