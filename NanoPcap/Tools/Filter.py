@@ -122,7 +122,7 @@ def datetimeToEpochNanos(dt):
 def main():
 	parser = argparse.ArgumentParser(description='PCAP Filter Tool')
 	parser.add_argument('input', help='PCAP file to use as input.')
-	parser.add_argument('output', help='Output file')
+	parser.add_argument('output', help='Output file. May include time format strings to roll the file based on packet time stamps, e.g. %%Y/%%m/%%d/%%H.pcap for hourly output files in daily folders.')
 
 	#Validation
 	parser.add_argument('--strict', action='store_true',

@@ -37,7 +37,7 @@ value).
 Filters a PCAP based on set criteria and optionally does other edits like snapshot
 length truncation, packet deduplication, or even fuzzing like random drops and duplication.
 
-	> NanoPcap/Tools/Filter.py -h
+	NanoPcap/Tools/Filter.py -h
 	usage: Filter.py [-h] [--strict] [-l SNAPLEN] [-o DATA_OFFSET]
 	                 [-x DATA_END_OFFSET] [-H] [-R] [-a]
 	                 [--required-link-type REQUIRED_LINK_TYPE]
@@ -51,7 +51,10 @@ length truncation, packet deduplication, or even fuzzing like random drops and d
 
 	positional arguments:
 	  input                 PCAP file to use as input.
-	  output                Output file
+	  output                Output file. May include time format strings to roll
+	                        the file based on packet time stamps, e.g.
+	                        %Y/%m/%d/%H.pcap for hourly output files in daily
+	                        folders.
 
 	optional arguments:
 	  -h, --help            show this help message and exit
