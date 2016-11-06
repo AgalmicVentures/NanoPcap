@@ -27,8 +27,6 @@ class PcapFilterListener(Listener.PcapListener):
 
 	def onPcapHeader(self, header):
 		self._header = header
-		if self._arguments.no_header or self._arguments.append:
-			return
 
 		#Warn on a larger snap len than before
 		if self._arguments.snaplen > header.snaplen():
