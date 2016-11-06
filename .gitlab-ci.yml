@@ -16,6 +16,7 @@ help_test_job:
     - NanoPcap/Tools/Dump.py -h
     - NanoPcap/Tools/Filter.py -h
     - NanoPcap/Tools/Merge.py -h
+    - NanoPcap/Tools/SplitEthernetFlows.py -h
     - NanoPcap/Tools/Summary.py -h
   only:
     - master
@@ -65,6 +66,9 @@ smoke_test_job:
     - diff TestData/SSH_L3.pcap TestData/SSH_L3_DuplicateMerge_Deduplicated.pcap
     #More advanced merge
     - NanoPcap/Tools/Merge.py TestData/SSH_L3.pcap TestData/SSH2_L3.pcap /dev/null
+
+    #Split Ethernet flows
+    #TODO
 
     #Summary
     #Without units
