@@ -1,4 +1,6 @@
 
+#TODO: parse MAC address
+#TODO: logisitical support for Ethertypes
 #TODO: support https://en.wikipedia.org/wiki/IEEE_802.1Q
 
 def macAddressToString(mac, separator=':'):
@@ -67,8 +69,26 @@ class EthernetPacket(object):
 		"""
 		return self._data[6:12]
 
-	#TODO: ethertype
+	def ethertypeBytes(self):
+		"""
+		Extracts the source MAC address from the data.
 
-	#TODO: payload
+		:return: bytes
+		"""
+		return self._data[12:14]
 
-	#TODO: CRC
+	def payload(self):
+		"""
+		Extracts the source MAC address from the data.
+
+		:return: bytes
+		"""
+		return self._data[14:-4]
+
+	def crcBytes(self):
+		"""
+		Extracts the source MAC address from the data.
+
+		:return: bytes
+		"""
+		return self._data[-4:]

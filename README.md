@@ -119,17 +119,11 @@ Merges two PCAP files with potentially interleaved timestamps.
 	  -h, --help  show this help message and exit
 	  --strict    Enables strict validation rules.
 
-### `SplitEthernetFlows`
-Splits a PCAP into multiple PCAP's, one per source-destination pair (NOTE: ordering does not matter).
+### `SplitFlows`
+Splits a PCAP into multiple PCAP's, one per flow at the top layer protocol.
 
 	> mkdir -p SplitData && NanoPcap/Tools/SplitEthernetFlows.py TestData/SSH_L3.pcap SplitData/ && ls SplitData/
-	40:00:40:06:1E:3E_45:10:00:34:97:74.pcap 40:00:40:06:6A:6E_45:10:00:34:4B:44.pcap 40:00:40:06:B6:73_45:10:00:34:FF:3E.pcap
-	40:00:40:06:E0:69_45:10:05:38:D0:44.pcap 40:00:40:06:E3:50_45:10:02:48:D0:4D.pcap 40:00:40:06:E5:21_45:10:00:78:D0:4C.pcap
-	40:00:40:06:27:D2_45:10:00:34:8D:E0.pcap 40:00:40:06:6C:55_45:10:00:34:49:5D.pcap 40:00:40:06:DE:F0_45:10:00:34:D6:C1.pcap
-	40:00:40:06:E1:CF_45:10:03:C8:D0:4E.pcap 40:00:40:06:E3:67_45:10:02:38:D0:46.pcap 40:00:40:06:45:5B_45:10:00:34:70:57.pcap
-	40:00:40:06:95:12_45:10:00:34:20:A0.pcap 40:00:40:06:DF:BF_45:10:05:DC:D0:4A.pcap 40:00:40:06:E1:E4_45:10:03:BC:D0:45.pcap
-	40:00:40:06:E4:72_45:10:01:28:D0:4B.pcap 40:00:40:06:59:9B_45:10:00:34:5C:17.pcap 40:00:40:06:B5:05_45:10:00:34:00:AD.pcap
-	40:00:40:06:DF:C1_45:10:05:DC:D0:48.pcap 40:00:40:06:E3:46_45:10:02:58:D0:47.pcap 40:00:40:06:E4:84_45:10:01:18:D0:49.pcap
+	192.168.1.192_192.168.1.241.pcap
 
 ### `Summary`
 Summarizes a PCAP. For example:

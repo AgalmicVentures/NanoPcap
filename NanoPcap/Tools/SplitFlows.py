@@ -12,7 +12,7 @@ _parentDir = os.path.dirname(os.path.dirname(_currentDir))
 sys.path.insert(0, _parentDir)
 
 from NanoPcap import Listener, Parser
-from NanoPcap.Protocols import Ethernet
+from NanoPcap.Protocols import Ethernet, IPv4
 
 class PcapSplitFlowsListener(Listener.PcapListener):
 
@@ -31,15 +31,25 @@ class PcapSplitFlowsListener(Listener.PcapListener):
 		if self._arguments.snaplen > header.snaplen():
 			print('WARNING: New snaplen is greater than original: %d > %d' % (self._arguments.snaplen, header.snaplen()))
 
+		#Check the link type
+		#TODO: put these constants somewhere
+		if header.network() == 1:
+			self._packetType = Ethernet.EthernetPacket
+		elif header.network() == 228:
+			self._packetType = IPv4.IPv4Packet
+		else:
+			print('ERROR: Link type is %d instead of %d' % (header.network(), 1))
+			sys.exit(1)
+
 		#Update with new snaplen
 		snaplen = min(self._arguments.snaplen, header.snaplen())
 		self._header.setSnaplen(snaplen)
 
 	def onPcapRecord(self, recordHeader, data):
-		ethernetPacket = Ethernet.EthernetPacket(data)
-		key = ethernetPacket.key()
-		fileName = os.path.join(self._arguments.output, key + '.pcap')
+		packet = self._packetType(data)
+		key = packet.key()
 
+		fileName = os.path.join(self._arguments.output, key + '.pcap')
 		outputFile = self._outputFiles.get(fileName)
 		if outputFile is None:
 			mode = 'ab' if self._arguments.append else 'wb'
