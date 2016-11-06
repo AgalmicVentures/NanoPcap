@@ -88,7 +88,8 @@ class PcapFilterListener(Listener.PcapListener):
 			if directory != '' and not os.path.exists(directory):
 				os.makedirs(directory)
 
-			self._outputFile = gzip.open(self._outputFileName, 'wb') if self._outputFileName.endswith('.gz') else open(self._outputFileName, 'ab' if self._arguments.append else 'wb')
+			mode = 'ab' if self._arguments.append else 'wb'
+			self._outputFile = gzip.open(self._outputFileName, mode) if self._outputFileName.endswith('.gz') else open(self._outputFileName, mode)
 			#TODO: should this write the header in append mode if there is nothing yet in the file?
 			if not (self._arguments.no_header or self._arguments.append):
 				self._header.writeToFile(self._outputFile)
