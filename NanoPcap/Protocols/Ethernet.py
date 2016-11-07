@@ -174,7 +174,7 @@ class EthernetPacket(object):
 
 	def payload(self):
 		"""
-		Extracts the source MAC address from the data.
+		Extracts the payload from the data.
 
 		:return: bytes
 		"""

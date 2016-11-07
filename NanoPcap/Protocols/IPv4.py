@@ -55,9 +55,41 @@ class IPv4Packet(object):
 		"""
 		Extracts the version.
 
-		:return: bytes
+		:return: int
 		"""
-		return self._data[0]
+		return self._data[0] & 0x0F
+
+	def ihl(self):
+		"""
+		Extracts the IHL.
+
+		:return: int
+		"""
+		return self._data[0] >> 4
+
+	def headerLength(self):
+		"""
+		Computes the header length from the IHL.
+
+		:return: int
+		"""
+		return self.ihl() * 4
+
+	def ttl(self):
+		"""
+		Extracts the TTL.
+
+		:return: int
+		"""
+		return self._data[8]
+
+	def protocol(self):
+		"""
+		Extracts the IP protocol (TCP, UDP, etc.).
+
+		:return: int
+		"""
+		return self._data[9]
 
 	#TODO: others
 
@@ -77,4 +109,12 @@ class IPv4Packet(object):
 		"""
 		return self._data[16:20]
 
-	#TODO: others
+	#TODO: options (even though they are little used)
+
+	def payload(self):
+		"""
+		Extracts the payload from the data.
+
+		:return: bytes
+		"""
+		return self._data[self.headerLength():]
