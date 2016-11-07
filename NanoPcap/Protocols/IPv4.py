@@ -27,6 +27,8 @@ def ipPairToKey(ip1, ip2, separator='_'):
 
 	return ''.join([ipAddressToString(lower), separator, ipAddressToString(upper)])
 
+########## Packet ##########
+
 class IPv4Packet(object):
 	"""
 	Represents an IPv4 packet and allows extracting its information.

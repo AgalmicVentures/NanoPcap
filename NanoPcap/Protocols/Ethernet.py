@@ -1,6 +1,7 @@
 
+from . import IPv4
+
 #TODO: parse MAC address
-#TODO: logisitical support for Ethertypes
 #TODO: support https://en.wikipedia.org/wiki/IEEE_802.1Q
 
 def macAddressToString(mac, separator=':'):
@@ -31,6 +32,80 @@ def macPairToKey(mac1, mac2, separator='_'):
 
 	return ''.join([macAddressToString(lower), separator, macAddressToString(upper)])
 
+########## Types ##########
+
+class Ethertype(object):
+	"""
+	Represents an Ethertype.
+	"""
+
+	def __init__(self, id, protocol, packetType=None):
+		self._id = id
+		self._protocol = protocol
+		self._packetType = packetType
+
+	def id(self):
+		"""
+		Returns the numeric value of the Ethertype.
+
+		:return: int
+		"""
+		return self._id
+
+	def protocol(self):
+		"""
+		Returns the name of the protocol of the Ethertype.
+
+		:return: str
+		"""
+		return self._protocol
+
+	def packetType(self):
+		"""
+		Returns the class of the Packet of this Ethertype.
+
+		:return: Packet or None
+		"""
+		return self._packetType
+
+ETHERTYPES = [
+	Ethertype(0x0800, 'IPv4', packetType=IPv4.IPv4Packet),
+	Ethertype(0x0806, 'ARP'),
+	Ethertype(0x0842, 'Wake-on-LAN'),
+	Ethertype(0x22F3, 'IETF TRILL Protocol'),
+	Ethertype(0x6003, 'DECnet Phase IV'),
+	Ethertype(0x8035, 'Reverse ARP'),
+	Ethertype(0x809B, 'Apple Talk'),
+	Ethertype(0x80F3, 'Apple Talk ARP'),
+	Ethertype(0x8100, 'VLAN-tagged Frame'),
+	Ethertype(0x8137, 'IPX'),
+	Ethertype(0x8204, 'QNX Qnet'),
+	Ethertype(0x86DD, 'IPv6'),
+	Ethertype(0x8808, 'Ethernet Flow Control'),
+	Ethertype(0x8819, 'CobraNet'),
+	Ethertype(0x8847, 'MPLS Unicast'),
+	Ethertype(0x8848, 'MPLS Multicast'),
+	Ethertype(0x8863, 'PPPoE Discovery'),
+	Ethertype(0x8864, 'PPPoE Session'),
+	Ethertype(0x88A4, 'EtherCAT'),
+	Ethertype(0x88CC, 'LLDP'),
+	Ethertype(0x88F7, 'PTP'),
+	Ethertype(0x88FB, 'PRP'),
+	Ethertype(0x8906, 'Fiber Channel over Ethernet'),
+	Ethertype(0x9000, 'Ethernet Configuration Testing Protocol'),
+]
+
+ETHERTYPE_ID_TO_ETHERTYPE = {}
+ETHERTYPE_PROTOCOL_TO_ETHERTYPE = {}
+for ethertype in ETHERTYPES:
+	assert(ethertype.id() not in ETHERTYPE_ID_TO_ETHERTYPE)
+	ETHERTYPE_ID_TO_ETHERTYPE[ethertype.id()] = ethertype
+
+	assert(ethertype.protocol() not in ETHERTYPE_PROTOCOL_TO_ETHERTYPE)
+	ETHERTYPE_PROTOCOL_TO_ETHERTYPE[ethertype.protocol()] = ethertype
+
+########## Packet ##########
+
 class EthernetPacket(object):
 	"""
 	Represents an Ethernet packet and allows extracting its information.
@@ -41,6 +116,7 @@ class EthernetPacket(object):
 	def __init__(self, data):
 		self._data = data
 		self._key = None
+		self._ethertype = None
 
 	def key(self):
 		"""
@@ -76,6 +152,25 @@ class EthernetPacket(object):
 		:return: bytes
 		"""
 		return self._data[12:14]
+
+	def ethertypeId(self):
+		"""
+		Returns the ethertype as a numeric value.
+
+		:return: int
+		"""
+		return self._data[12] * 256 + self._data[13]
+
+	def ethertype(self):
+		"""
+		Returns the ethertype as an object with useful helpers.
+
+		:return: Ethertype
+		"""
+		if self._ethertype is None:
+			self._ethertype = ETHERTYPE_ID_TO_ETHERTYPE.get(self.ethertypeId())
+
+		return self._ethertype
 
 	def payload(self):
 		"""
