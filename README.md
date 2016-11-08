@@ -37,7 +37,7 @@ value).
 Filters a PCAP based on set criteria and optionally does other edits like snapshot
 length truncation, packet deduplication, or even fuzzing like random drops and duplication.
 
-	NanoPcap/Tools/Filter.py -h
+	> NanoPcap/Tools/Filter.py -h
 	usage: Filter.py [-h] [--strict] [-l SNAPLEN] [-o DATA_OFFSET]
 	                 [-x DATA_END_OFFSET] [-H] [-R] [-a]
 	                 [--required-link-type REQUIRED_LINK_TYPE]
@@ -124,6 +124,33 @@ Splits a PCAP into multiple PCAP's, one per flow at the top layer protocol.
 
 	> mkdir -p SplitData && NanoPcap/Tools/SplitEthernetFlows.py TestData/SSH_L3.pcap SplitData/ && ls SplitData/
 	192.168.1.192_192.168.1.241.pcap
+
+	> NanoPcap/Tools/SplitFlows.py -h
+	usage: SplitFlows.py [-h] [--strict] [-l SNAPLEN] [-o DATA_OFFSET]
+	                     [-x DATA_END_OFFSET] [-H] [-a] [--link-type LINK_TYPE]
+	                     input output
+
+	PCAP Filter Tool
+
+	positional arguments:
+	  input                 PCAP file to use as input.
+	  output                Output path -- output files will be named based on the
+	                        identifying attributes.
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  --strict              Enables strict validation rules.
+	  -l SNAPLEN, --snaplen SNAPLEN
+	                        Add a certain number of bytes for each packet record.
+	  -o DATA_OFFSET, --data-offset DATA_OFFSET
+	                        Offset of the data to include.
+	  -x DATA_END_OFFSET, --data-end-offset DATA_END_OFFSET
+	                        Offset from the end of the data to include.
+	  -H, --no-header       Do not output the header.
+	  -a, --append          Append to the file (implies no header).
+	  --link-type LINK_TYPE
+	                        A value to set the link type in the header to (e.g. 1
+	                        for Ethernet, 228 for IPv4, 229 for IPv6).
 
 ### `Summary`
 Summarizes a PCAP. For example:
