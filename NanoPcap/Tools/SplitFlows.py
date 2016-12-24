@@ -62,19 +62,18 @@ class PcapSplitFlowsListener(Listener.PcapListener):
 			self._outputFiles[fileName] = outputFile
 
 		#Update with new snaplen
+		#NOTE: since the link type doesn't change, the original length shouldn't either
 		start = self._arguments.data_offset
 		end = min(start + self._arguments.snaplen, len(data) - start - self._arguments.data_end_offset)
 		truncatedData = data[start:end]
 		recordHeader.setIncludedLength(len(truncatedData))
-		if self._arguments.link_type is not None:
-			recordHeader.setOriginalLength(len(truncatedData))
 
 		#Write the header and data
 		recordHeader.writeToFile(outputFile)
 		outputFile.write(truncatedData)
 
 def main():
-	parser = argparse.ArgumentParser(description='PCAP Filter Tool')
+	parser = argparse.ArgumentParser(description='PCAP Flow Splitting Tool')
 	parser.add_argument('input', help='PCAP file to use as input.')
 	parser.add_argument('output', help='Output path -- output files will be named based on the identifying attributes.')
 
@@ -93,9 +92,6 @@ def main():
 		help='Do not output the header.')
 	parser.add_argument('-a', '--append', action='store_true',
 		help='Append to the file (implies no header).')
-
-	parser.add_argument('--link-type', type=int, default=None, action='store',
-		help='A value to set the link type in the header to (e.g. 1 for Ethernet, 228 for IPv4, 229 for IPv6).')
 
 	arguments = parser.parse_args(sys.argv[1:])
 
