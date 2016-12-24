@@ -119,6 +119,39 @@ Merges two PCAP files with potentially interleaved timestamps.
 	  -h, --help  show this help message and exit
 	  --strict    Enables strict validation rules.
 
+### `Split`
+Splits a PCAP into slices with a maximum number of packets, bytes, etc.
+
+	> NanoPcap/Tools/Split.py -h
+	usage: Split.py [-h] [--gzip-output] [--strict] [-b MAX_BYTES]
+	                [-p MAX_PACKETS] [-l SNAPLEN] [-o DATA_OFFSET]
+	                [-x DATA_END_OFFSET] [-H] [-a]
+	                input output
+
+	PCAP Splitting Tool
+
+	positional arguments:
+	  input                 PCAP file to use as input.
+	  output                Output path -- output files will be named based on the
+	                        identifying attributes.
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  --gzip-output         Enables gzip for the output files.
+	  --strict              Enables strict validation rules.
+	  -b MAX_BYTES, --max-bytes MAX_BYTES
+	                        The maximum number of bytes in a slice.
+	  -p MAX_PACKETS, --max-packets MAX_PACKETS
+	                        The maximum number of packets in a slice.
+	  -l SNAPLEN, --snaplen SNAPLEN
+	                        Add a certain number of bytes for each packet record.
+	  -o DATA_OFFSET, --data-offset DATA_OFFSET
+	                        Offset of the data to include.
+	  -x DATA_END_OFFSET, --data-end-offset DATA_END_OFFSET
+	                        Offset from the end of the data to include.
+	  -H, --no-header       Do not output the header.
+	  -a, --append          Append to the file (implies no header).
+
 ### `SplitFlows`
 Splits a PCAP into multiple PCAP's, one per flow at the top layer protocol.
 
