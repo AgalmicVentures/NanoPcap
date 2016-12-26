@@ -14,6 +14,7 @@ _parentDir = os.path.dirname(os.path.dirname(_currentDir))
 sys.path.insert(0, _parentDir)
 
 from NanoPcap import Listener, Parser
+from NanoPcap.Utility import Data
 
 class PcapFilterListener(Listener.PcapListener):
 
@@ -106,9 +107,15 @@ class PcapFilterListener(Listener.PcapListener):
 		if self._arguments.time_shift_seconds is not None:
 			recordHeader.setTsSec(recordHeader.tsSec() + self._arguments.time_shift_seconds)
 
-		#Write the header and data
+		#Write the header
 		recordHeader.writeToFile(self._outputFile)
-		self._outputFile.write(truncatedData)
+
+		#Write the data, randomizing if necessary
+		if self._arguments.data_randomization_fraction > 0:
+			newTruncatedData = Data.randomizeBytes(truncatedData, self._arguments.data_randomization_fraction)
+			self._outputFile.write(newTruncatedData)
+		else:
+			self._outputFile.write(truncatedData)
 
 		#Duplicate?
 		if self._arguments.duplicate_fraction > 0 and random.random() < self._arguments.duplicate_fraction:
@@ -141,6 +148,8 @@ def main():
 		help='Do not output records.')
 	parser.add_argument('-a', '--append', action='store_true',
 		help='Append to the file (implies no header).')
+	parser.add_argument('--data-randomization-fraction', type=float, default=0.0, action='store',
+		help='Fraction of the data bytes to randomize (from 0 to 1 inclusive).')
 
 	#Header edits
 	parser.add_argument('--required-link-type', type=int, default=None, action='store',
