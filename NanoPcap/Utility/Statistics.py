@@ -29,6 +29,9 @@ class OrderStatistics(object):
 
 		:param x: float
 		"""
+		if math.isnan(x):
+			return
+
 		self._samples.append(x)
 		self._dirty = True
 

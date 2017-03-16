@@ -52,6 +52,18 @@ class OrderStatisticsTest(unittest.TestCase):
         self.assertEqual(s.q3(), 4.0)
         self.assertEqual(s.max(), 5.0)
 
+    def test_nsn(self):
+        s = Statistics.OrderStatistics()
+        s.sample(3.0)
+        s.sample(float('nan'))
+
+        self.assertEqual(s.n(), 1)
+        self.assertEqual(s.min(), 3.0)
+        self.assertEqual(s.q1(), 3.0)
+        self.assertEqual(s.median(), 3.0)
+        self.assertEqual(s.q3(), 3.0)
+        self.assertEqual(s.max(), 3.0)
+
 class SummaryStatisticsTest(unittest.TestCase):
 
     def test_empty(self):
