@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -u
+
 MODULE_PATH=`pwd` #Often this is the correct path
 
 rm -r docs/

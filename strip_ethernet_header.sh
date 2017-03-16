@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -u
+
 if [[ $# -lt 2 ]]
 then
 	echo 'Usage: ./strip_ethernet_header.sh <INPUT> <OUTPUT>'
