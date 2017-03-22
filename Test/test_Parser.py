@@ -89,7 +89,7 @@ class ParserTest(unittest.TestCase):
 
         self.assertEqual(listener.recordHeaders(), [])
 
-    def test_parse(self):
+    def test_parse_data(self):
         listener = Listener.PcapRecordingListener()
         Parser.parseFile(os.path.join(testDataPath, 'SSH_L3.pcap'), listener)
 
