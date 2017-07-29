@@ -315,7 +315,14 @@ def main():
 	arguments = parser.parse_args(sys.argv[1:])
 
 	listener = PcapSummaryListener(arguments)
-	parseFile(arguments.pcap, listener, strict=arguments.strict)
+	try:
+		parseFile(arguments.pcap, listener, strict=arguments.strict)
+	except KeyboardInterrupt:
+		#Allow partial reports when hitting Ctrl + C (may be slightly inaccurate)
+		print() #Skip the ^C
+		print('User pressed Ctrl + C -- this is a partial summary and may have some small internal inconsistencies!')
+		print('DO NOT FEED OUTPUT TO DOWNSTREAM TOOLS!')
+		print()
 
 	if arguments.json:
 		listener.printJsonReport()
