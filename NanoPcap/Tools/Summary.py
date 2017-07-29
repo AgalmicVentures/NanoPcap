@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import argparse
+import collections
 import datetime
 import json
 import math
@@ -55,6 +56,9 @@ class PcapSummaryListener(PcapListener):
 		self._packetRatesOrder = Statistics.OrderStatistics()
 		self._dataRatesOrder = Statistics.OrderStatistics()
 
+		self._byteCounts = collections.Counter()
+		self._indexValues = collections.defaultdict(set)
+
 	def _formatRate1000(self, value, precision=1):
 		return Units.formatUnits(value, Units.UNITS_1000, useUnits=self._arguments.use_units, precision=precision)
 
@@ -63,6 +67,14 @@ class PcapSummaryListener(PcapListener):
 
 	def _formatTime(self, value, precision=1):
 		return Units.formatUnits(value, Units.UNITS_TIME, useUnits=self._arguments.use_units, precision=precision)
+
+	def _calculateConstantDataOffsets(self):
+		"""
+		Calculates indices into packet data that have only 1 value.
+
+		:return: list
+		"""
+		return [n for n in self._indexValues if self._indexValues[n] == 1]
 
 	def printReport(self):
 		formatString = '%-22s %10s %16s %14s %14s %14s %14s %14s %14s %14s %14s %14s %14s' if not self._arguments.use_units else '%-22s %8s %8s %8s %8s %8s %8s %8s %8s %8s %8s %8s %8s'
@@ -163,6 +175,23 @@ class PcapSummaryListener(PcapListener):
 				self._formatRate1000(nextPowerOf10DataRate, precision=0), 100.0 * maxDataRateFraction))
 			if maxDataRateFraction > 0.8:
 				print('WARNING: Peak data rates may be approaching the limit of your line')
+		print()
+
+		#Investigate possible semantics
+		constantDataOffsets = self._calculateConstantDataOffsets()
+		if len(constantDataOffsets) > 0:
+			print('Constant offsets: %s' % ', '.join(str(n) for n in constantDataOffsets))
+		else:
+			print('No constant offsets.')
+		print()
+
+		print('Most common bytes:')
+		print('   Byte    Hex       Count        %    % Excess')
+		for byte, count in self._byteCounts.most_common(32):
+			percent = 100.0 * count / self._includedLengths.sum()
+			percentExcess = percent / (1.0 / 256.0) - 100.0
+			print('    %3d   0x%02X    %8d    %.3f    %.1f' % (
+				byte, byte, count, percent, percentExcess))
 
 	def printJsonReport(self):
 		output = {
@@ -236,6 +265,8 @@ class PcapSummaryListener(PcapListener):
 				'p999': self._dataRatesOrder.fractile(0.999),
 				'max': self._dataRatesOrder.max(),
 			},
+			'byteCounts': dict(self._byteCounts),
+			'indexValues': {k: list(self._indexValues[k]) for k in self._indexValues},
 		}
 
 		print(json.dumps(output, indent=2, separators=(',', ': '), sort_keys=True))
@@ -265,6 +296,10 @@ class PcapSummaryListener(PcapListener):
 
 		self._lastNs = ns
 		self._lastPacketLength = recordHeader.originalLength()
+
+		for n, byte in enumerate(data):
+			self._byteCounts[byte] += 1
+			self._indexValues[n].add(byte)
 
 def main():
 	parser = argparse.ArgumentParser(description='PCAP Summary Diagnostic')
