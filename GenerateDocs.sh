@@ -22,14 +22,14 @@
 
 set -u
 
-MODULE_PATH=`pwd` #Often this is the correct path
+MODULE_PATH=$(pwd) #Often this is the correct path
 
 rm -r docs/
 mkdir -p docs
 
 cp sphinx/* docs/
 
-sphinx-apidoc -o docs/ $MODULE_PATH
+sphinx-apidoc -o docs/ "$MODULE_PATH"
 
-cd docs/
+cd docs/ || exit
 make html

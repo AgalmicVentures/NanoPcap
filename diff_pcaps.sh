@@ -31,4 +31,4 @@ fi
 set -e
 set -x
 
-diff <(NanoPcap/Tools/Dump.py $1) <(NanoPcap/Tools/Dump.py $2)
+diff <(NanoPcap/Tools/Dump.py "$1") <(NanoPcap/Tools/Dump.py "$2")
