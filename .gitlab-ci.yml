@@ -25,8 +25,16 @@ before_script:
   - pip3 install -r requirements.txt
 
 stages:
+  - lint
   - test
   - documentation
+
+shellcheck_lint_job:
+  stage: lint
+  script:
+    - shellcheck *.sh
+  only:
+    - master
 
 help_test_job:
   stage: test
