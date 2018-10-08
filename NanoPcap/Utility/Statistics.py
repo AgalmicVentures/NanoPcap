@@ -65,8 +65,9 @@ class OrderStatistics(object):
 
 	def fractile(self, f):
 		"""
-		Returns the median of samples so far.
+		Returns the f-th fractile of samples so far.
 
+		:param f: float in [0, 1]
 		:return: float
 		"""
 		if self._dirty:
