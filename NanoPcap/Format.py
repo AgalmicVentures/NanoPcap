@@ -241,6 +241,8 @@ class PcapRecordHeader(object):
 
 		#Strict validation checks semantics
 		if strict:
+			#NOTE: Some files actually do this on purpose, for example to include additional metadata after the packet
+			#Hence, this being an optional check
 			if originalLength < includedLength:
 				raise ValueError('original_length < included_length (%d < %d)' % (originalLength, includedLength))
 			if fileHeader is not None and fileHeader.snaplen() < includedLength:
