@@ -62,7 +62,7 @@ def parseUnits(value, units):
 	"""
 	n = len(value)
 	for i, c in enumerate(value):
-		if value[i].isalpha():
+		if c.isalpha():
 			n = i
 			break
 
