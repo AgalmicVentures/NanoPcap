@@ -111,8 +111,9 @@ class PcapFilterListener(Listener.PcapListener):
 
 			mode = 'ab' if self._arguments.append else 'wb'
 			self._outputFile = gzip.open(self._outputFileName, mode) if self._outputFileName.endswith('.gz') else open(self._outputFileName, mode)
-			#TODO: should this write the header in append mode if there is nothing yet in the file?
-			if not (self._arguments.no_header or self._arguments.append):
+			#Write the header at the beginning, unless instructed otherwise
+			#This neatly handles append mode
+			if not self._arguments.no_header and self._outputFile.tell() == 0:
 				self._header.writeToFile(self._outputFile)
 
 		#Update with new snaplen
