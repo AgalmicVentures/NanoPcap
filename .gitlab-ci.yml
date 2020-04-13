@@ -34,6 +34,7 @@ stages:
   - lint
   - test
   - documentation
+  - deploy
 
 shellcheck_lint_job:
   stage: lint
@@ -133,5 +134,15 @@ documentation_job:
       - docs/
   script:
     - ./GenerateDocs.sh
+  only:
+    - master
+
+upload_to_pypi_job:
+  stage: deploy
+  script:
+    - python3 -m pip install --upgrade setuptools wheel twine
+    - python3 setup.py sdist bdist_wheel
+    - python3 -m twine upload dist/*
+  when: manual
   only:
     - master
