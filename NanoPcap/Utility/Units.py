@@ -74,7 +74,7 @@ def parseUnits(value, units):
 		if unitStr == unit:
 			return int(multiplier * number)
 
-	raise ValueError('Uknknown unit "%s"' % unitStr)
+	raise ValueError('Unknown unit "%s"' % unitStr)
 
 #### Standard Units #####
 

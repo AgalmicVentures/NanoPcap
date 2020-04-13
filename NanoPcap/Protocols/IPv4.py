@@ -19,22 +19,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-def ipAddressToString(mac, separator='.'):
+def ipAddressToString(ip, separator='.'):
 	"""
-	Converts a MAC address from bytes into a string.
+	Converts an IPv4 address from bytes into a string.
 
-	:param mac: bytes
+	:param ip: bytes
 	:param separator: str
 	:return: str
 	"""
-	return separator.join('%d' % b for b in mac)
+	return separator.join('%d' % b for b in ip)
 
 def ipPairToKey(ip1, ip2, separator='_'):
 	"""
-	Converts a pair of MAC addresses from bytes into a key.
+	Converts a pair of IPv4 addresses from bytes into a key.
 
-	:param mac1: bytes
-	:param mac2: bytes
+	:param ip1: bytes
+	:param ip2: bytes
 	:param separator: str
 	:return: str
 	"""
