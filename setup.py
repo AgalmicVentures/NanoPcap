@@ -26,7 +26,7 @@ with open('README.md', 'r') as readmeFile:
 
 setuptools.setup(
     name='NanoPcap',
-    version='0.1.0',
+    version='1.0.0',
     author='Ian Hutchinson',
     author_email='ihutchinson@agalmicventures.com',
     description='PCAP tools and parsing library with nanosecond support and without dependencies',
@@ -36,9 +36,11 @@ setuptools.setup(
     packages=['NanoPcap'],
     license='MIT',
     classifiers=[
-        'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3',
+        'Topic :: Internet :: Log Analysis',
         'Topic :: System :: Networking',
+        'Topic :: Utilities',
     ],
 )
