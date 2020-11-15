@@ -52,10 +52,9 @@ class PcapSplitFlowsListener(Listener.PcapListener):
 			print('WARNING: New snaplen is greater than original: %d > %d' % (self._arguments.snaplen, header.snaplen()))
 
 		#Check the link type
-		#TODO: put these constants somewhere
-		if header.network() == 1:
+		if header.network() == Ethernet.EthernetPacket.LINKTYPE:
 			self._packetType = Ethernet.EthernetPacket
-		elif header.network() == 228:
+		elif header.network() == IPv4.IPv4Packet.LINKTYPE:
 			self._packetType = IPv4.IPv4Packet
 		else:
 			print('ERROR: Link type is %d instead of %d' % (header.network(), 1))

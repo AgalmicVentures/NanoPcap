@@ -56,6 +56,8 @@ class IPv4Packet(object):
 	https://en.wikipedia.org/wiki/IPv4#Packet_structure
 	"""
 
+	LINKTYPE = 228
+
 	def __init__(self, data):
 		self._data = data
 		self._key = None

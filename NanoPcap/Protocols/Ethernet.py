@@ -133,6 +133,8 @@ class EthernetPacket(object):
 	https://en.wikipedia.org/wiki/Ethernet_frame
 	"""
 
+	LINKTYPE = 1
+
 	def __init__(self, data):
 		self._data = data
 		self._key = None
