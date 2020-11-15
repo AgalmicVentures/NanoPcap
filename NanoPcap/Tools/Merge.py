@@ -42,7 +42,8 @@ def main():
 	#Validation
 	parser.add_argument('--strict', action='store_true',
 		help='Enables strict validation rules.')
-	#TODO: flag to require same link type?
+	parser.add_argument('-R', '--require-same-linktype', action='store_true',
+		help='Require the two PCAPs being merged to have the same link type.')
 
 	arguments = parser.parse_args(sys.argv[1:])
 
@@ -54,7 +55,9 @@ def main():
 		parser2 = Parser.PcapParser(inputFile2, strict=arguments.strict)
 		iterator2 = parser2.parse()
 
-		#TODO: validate link types, snap lengths, etc.
+		if arguments.require_same_linktype and parser1.header().network() != parser2.header().network():
+			print('ERROR: Mismatched link types - %s vs %s' % (parser1.header().network(), parser2.header().network()))
+			return 1
 
 		with gzip.open(arguments.output, 'wb') if arguments.output.endswith('.gz') else open(arguments.output, 'wb') as outputFile:
 			#Output the header

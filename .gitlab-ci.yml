@@ -100,6 +100,9 @@ smoke_test_job:
     - diff TestData/SSH_L3.pcap TestData/SSH_L3_DuplicateMerge_Deduplicated.pcap
     #More advanced merge
     - NanoPcap/Tools/Merge.py TestData/SSH_L3.pcap TestData/SSH2_L3.pcap /dev/null
+    #Mistmatched link types
+    - NanoPcap/Tools/Merge.py TestData/SSH_L3.pcap TestData/Empty.pcap /dev/null
+    - ! NanoPcap/Tools/Merge.py -R TestData/SSH_L3.pcap TestData/Empty.pcap /dev/null
 
     #Split
     #TODO
