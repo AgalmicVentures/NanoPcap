@@ -105,10 +105,10 @@ smoke_test_job:
     - "! NanoPcap/Tools/Merge.py -R TestData/SSH_L3.pcap TestData/Empty.pcap /dev/null"
 
     #Split
-    #TODO
+    - NanoPcap/Tools/Split.py -p 7 TestData/SSH_L3.pcap .
 
     #Split flows
-    #TODO
+    - NanoPcap/Tools/SplitFlows.py TestData/SSH_L3.pcap .
 
     #Summary
     #Without units
