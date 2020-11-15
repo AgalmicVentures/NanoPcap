@@ -75,8 +75,9 @@ class PcapSplitFlowsListener(Listener.PcapListener):
 			mode = 'ab' if self._arguments.append else 'wb'
 			outputFile = gzip.open(fileName, mode) if fileName.endswith('.gz') else open(fileName, mode)
 
-			#TODO: should this write the header in append mode if there is nothing yet in the file?
-			if not (self._arguments.no_header or self._arguments.append):
+			#Write the header at the beginning, unless instructed otherwise
+			#This neatly handles append mode
+			if not self._arguments.no_header and outputFile.tell() == 0:
 				self._header.writeToFile(outputFile)
 
 			self._outputFiles[fileName] = outputFile
