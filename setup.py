@@ -26,7 +26,7 @@ with open('README.md', 'r') as readmeFile:
 
 setuptools.setup(
     name='NanoPcap',
-    version='1.0.1',
+    version='1.0.2',
     author='Ian Hutchinson',
     author_email='ihutchinson@agalmicventures.com',
     description='PCAP tools and parsing library with nanosecond support and without dependencies',
