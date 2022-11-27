@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.0.3] - 2022-11-27
+### Removed
+- Removed obsolete documentation generation.
+
 ## [1.0.2] - 2022-11-27
 ### Changed
 - Fix imports so tools can be used directly.
@@ -22,6 +26,7 @@
 - Fix `Filter` tool append mode file header generation when appending to an empty file.
 - Clean up typos in documentation and error messages.
 
+[1.0.3]: https://github.com/AgalmicVentures/HumanTime/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/AgalmicVentures/HumanTime/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/AgalmicVentures/HumanTime/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/AgalmicVentures/HumanTime/compare/0.1.0...1.0.0
