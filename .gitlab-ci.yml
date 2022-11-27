@@ -33,7 +33,6 @@ before_script:
 stages:
   - lint
   - test
-  - documentation
   - deploy
 
 shellcheck_lint_job:
@@ -126,17 +125,6 @@ unit_test_job:
   stage: test
   script:
     - python3 -m unittest discover
-  only:
-    - master
-
-documentation_job:
-  stage: documentation
-  artifacts:
-    expire_in: 30d
-    paths:
-      - docs/
-  script:
-    - ./GenerateDocs.sh
   only:
     - master
 
