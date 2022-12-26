@@ -22,30 +22,30 @@
 import setuptools
 
 with open('README.md', 'r') as readmeFile:
-    readme = readmeFile.read()
+	readme = readmeFile.read()
 
 setuptools.setup(
-    name='NanoPcap',
-    version='1.0.4',
-    author='Ian Hutchinson',
-    author_email='ihutchinson@agalmicventures.com',
-    description='PCAP tools and parsing library with nanosecond support and without dependencies',
-    long_description=readme,
-    long_description_content_type='text/markdown',
-    url='https://github.com/AgalmicVentures/NanoPcap',
-    packages=[
-        'NanoPcap',
-        'NanoPcap.Protocols',
-        'NanoPcap.Tools',
-        'NanoPcap.Utility',
-    ],
-    license='MIT',
-    classifiers=[
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3',
-        'Topic :: Internet :: Log Analysis',
-        'Topic :: System :: Networking',
-        'Topic :: Utilities',
-    ],
+	name='NanoPcap',
+	version='1.0.4',
+	author='Ian Hutchinson',
+	author_email='ihutchinson@agalmicventures.com',
+	description='PCAP tools and parsing library with nanosecond support and without dependencies',
+	long_description=readme,
+	long_description_content_type='text/markdown',
+	url='https://github.com/AgalmicVentures/NanoPcap',
+	packages=[
+		'NanoPcap',
+		'NanoPcap.Protocols',
+		'NanoPcap.Tools',
+		'NanoPcap.Utility',
+	],
+	license='MIT',
+	classifiers=[
+		'License :: OSI Approved :: MIT License',
+		'Operating System :: OS Independent',
+		'Programming Language :: Python :: 3',
+		'Topic :: Internet :: Log Analysis',
+		'Topic :: System :: Networking',
+		'Topic :: Utilities',
+	],
 )
