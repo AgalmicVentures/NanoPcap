@@ -1,6 +1,6 @@
 # Change Log
 
-## 1.0.4
+## [1.0.4]
 ### Changed
 - Raise ValueError on invalid PCAP magic in strict mode.
 
@@ -30,6 +30,7 @@
 - Fix `Filter` tool append mode file header generation when appending to an empty file.
 - Clean up typos in documentation and error messages.
 
+[1.0.4]: https://github.com/AgalmicVentures/HumanTime/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/AgalmicVentures/HumanTime/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/AgalmicVentures/HumanTime/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/AgalmicVentures/HumanTime/compare/1.0.0...1.0.1
