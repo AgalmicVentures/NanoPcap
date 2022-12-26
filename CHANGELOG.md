@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.4
+### Changed
+- Raise ValueError on invalid PCAP magic in strict mode.
+
 ## [1.0.3] - 2022-11-27
 ### Removed
 - Removed obsolete documentation generation.

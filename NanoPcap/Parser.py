@@ -46,6 +46,9 @@ class PcapParser(object):
 			headerValues = Format.PCAP_HEADER_STRUCT_INVERTED.unpack(headerBytes)
 			self._recordHeaderStruct = Format.PCAP_RECORD_HEADER_STRUCT_INVERTED
 		else:
+			if strict and headerValues[0] not in [Format.PCAP_MAGIC_NUMBER, Format.PCAP_NS_MAGIC_NUMBER]:
+				raise ValueError('PCAP header has invalid magic %X' % headerValues[0])
+
 			self._recordHeaderStruct = Format.PCAP_RECORD_HEADER_STRUCT
 
 		self._header = Format.PcapHeader(*headerValues)
